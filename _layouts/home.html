@@ -10,18 +10,36 @@ layout: default
     <p class="home-desc home-hero-animate home-hero-delay">Explore my work, talks, and writings</p>
   </header>
 
-  <div class="section-cards">
-    {% for section in site.data.sections %}
-    <a href="{{ section.url | relative_url }}" class="section-card section-card-animate" style="--accent: {{ section.accent }}; --card-anim-delay: {{ forloop.index0 }};">
-      <span class="section-card-icon"><i class="{{ section.icon }}"></i></span>
-      <div class="section-card-content">
-        <h3 class="section-card-title">{{ section.title }}</h3>
-        <p class="section-card-desc">{{ section.description }}</p>
-      </div>
-      <span class="section-card-arrow"><i class="fas fa-arrow-right"></i></span>
-    </a>
-    {% endfor %}
-  </div>
+  <section class="home-section">
+    <h2 class="section-heading">Know more about me</h2>
+    <div class="section-cards">
+      {% for section in site.data.sections.know_about_me %}
+      <a href="{{ section.url | relative_url }}" class="section-card section-card-animate" style="--accent: {{ section.accent }}; --card-anim-delay: {{ forloop.index0 }};">
+        <span class="section-card-icon"><i class="{{ section.icon }}"></i></span>
+        <div class="section-card-content">
+          <h3 class="section-card-title">{{ section.title }}</h3>
+          <p class="section-card-desc">{{ section.description }}</p>
+        </div>
+        <span class="section-card-arrow"><i class="fas fa-arrow-right"></i></span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="home-section">
+    <h2 class="section-heading">Blogs</h2>
+    <div class="section-cards">
+      {% assign blogs = site.data.sections.blogs %}
+      <a href="{{ blogs.url | relative_url }}" class="section-card section-card-animate" style="--accent: {{ blogs.accent }}; --card-anim-delay: 4;">
+        <span class="section-card-icon"><i class="{{ blogs.icon }}"></i></span>
+        <div class="section-card-content">
+          <h3 class="section-card-title">{{ blogs.title }}</h3>
+          <p class="section-card-desc">{{ blogs.description }}</p>
+        </div>
+        <span class="section-card-arrow"><i class="fas fa-arrow-right"></i></span>
+      </a>
+    </div>
+  </section>
 </div>
 
 <style>
@@ -74,6 +92,21 @@ layout: default
   font-size: 0.95rem;
   opacity: 0.75;
   position: relative;
+}
+
+.home-section {
+  margin-bottom: 2.5rem;
+}
+
+.home-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-heading {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem;
+  opacity: 0.9;
 }
 
 .section-cards {
