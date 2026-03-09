@@ -8,19 +8,19 @@
 - title: Conferences & Sessions
   description: Security talks, workshops, and fireside chats I've delivered.
   icon: fas fa-microphone-lines
-  url: /Conferences and Sessions/
+  url: /Conferences-and-Sessions/
   accent: "#7c3aed"
 
 - title: Achievements & Certifications
   description: Hall of Fame, certifications, and recognitions.
   icon: fas fa-trophy
-  url: /Achievements and Certifications/
+  url: /Achievements-and-Certifications/
   accent: "#f59e0b"
 
 - title: Work & Education
   description: Experience at Zeron, Securityium, VTF, and my education.
   icon: fas fa-briefcase
-  url: /employment and education/
+  url: /employment-and-education/
   accent: "#06b6d4"
 
 - title: Blogs & Articles
