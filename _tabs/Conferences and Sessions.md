@@ -1,12 +1,12 @@
 ---
 layout: default
 icon: fa fa-users
-order: 1
+order: 2
 ---
 
 # Conferences and Sessions
 
-<p style="color:white">The following are the security conferences/sessions where I was invited as a Guest speake:.</p>
+<p style="color:white">The following are the security conferences/sessions where I was invited as a Guest speaker:.</p>
 
 <div class="conference-grid">
 
@@ -42,7 +42,7 @@ order: 1
     {% include slider.html slider_id="zeron_fireside" %}
     <div class="conference-details">
       <h3 style="color:white">ZERON FIRESIDE CHAT</h3>
-      <p style="color:white">I was invided at the FiresideChat by Zeron on the topic <b>"The Attack Surface Factor: Elevating or Reducing Your Cyber Value at Risk?"</b></p>
+      <p style="color:white">I was invited at the FiresideChat by Zeron on the topic <b>"The Attack Surface Factor: Elevating or Reducing Your Cyber Value at Risk?"</b></p>
     </div>
   </div>
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 icon: fa-solid fa-briefcase
-order: 3
+order: 4
 ---
 
 # Work Experience

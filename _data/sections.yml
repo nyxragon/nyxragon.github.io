@@ -1,0 +1,30 @@
+# Home page section cards - edit titles, descriptions, and links as needed
+- title: Know About Me
+  description: Who I am, what I do, and my journey in cybersecurity.
+  icon: fas fa-user-astronaut
+  url: /about/
+  accent: "#00d4aa"
+
+- title: Conferences & Sessions
+  description: Security talks, workshops, and fireside chats I've delivered.
+  icon: fas fa-microphone-lines
+  url: /Conferences and Sessions/
+  accent: "#7c3aed"
+
+- title: Achievements & Certifications
+  description: Hall of Fame, certifications, and recognitions.
+  icon: fas fa-trophy
+  url: /Achievements and Certifications/
+  accent: "#f59e0b"
+
+- title: Work & Education
+  description: Experience at Zeron, Securityium, VTF, and my education.
+  icon: fas fa-briefcase
+  url: /employment and education/
+  accent: "#06b6d4"
+
+- title: Blogs & Articles
+  description: Technical writeups, research notes, and security insights.
+  icon: fas fa-pen-fancy
+  url: /blogs/
+  accent: "#ec4899"

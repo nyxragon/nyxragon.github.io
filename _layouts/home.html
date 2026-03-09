@@ -1,0 +1,137 @@
+---
+layout: default
+---
+
+{% include lang.html %}
+
+<div class="home-sections">
+  <header class="home-hero">
+    <p class="home-subtitle">{{ site.tagline }}</p>
+    <p class="home-desc">Explore my work, talks, and writings</p>
+  </header>
+
+  <div class="section-cards">
+    {% for section in site.data.sections %}
+    <a href="{{ section.url | relative_url }}" class="section-card" style="--accent: {{ section.accent }}">
+      <span class="section-card-icon"><i class="{{ section.icon }}"></i></span>
+      <div class="section-card-content">
+        <h3 class="section-card-title">{{ section.title }}</h3>
+        <p class="section-card-desc">{{ section.description }}</p>
+      </div>
+      <span class="section-card-arrow"><i class="fas fa-arrow-right"></i></span>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+/* Card theming - adapts to Chirpy light/dark */
+.section-card {
+  --card-bg: #252525;
+  --card-border: rgba(255,255,255,0.08);
+}
+@media (prefers-color-scheme: light) {
+  html:not([data-mode="dark"]) .section-card {
+    --card-bg: #f6f6f6;
+    --card-border: rgba(0,0,0,0.08);
+  }
+}
+html[data-mode="light"] .section-card {
+  --card-bg: #f6f6f6;
+  --card-border: rgba(0,0,0,0.08);
+}
+
+.home-sections {
+  padding: 2rem 0 3rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.home-hero {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.home-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.85;
+  margin-bottom: 0.5rem;
+}
+
+.home-desc {
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.section-cards {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.section-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem 1.75rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.section-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  border-color: var(--accent, #00d4aa);
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-mode="dark"]) .section-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  }
+}
+
+.section-card-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.section-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.section-card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem 0;
+}
+
+.section-card-desc {
+  font-size: 0.9rem;
+  opacity: 0.75;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.section-card-arrow {
+  color: var(--accent);
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+}
+
+.section-card:hover .section-card-arrow {
+  transform: translateX(4px);
+  opacity: 1;
+}
+</style>
