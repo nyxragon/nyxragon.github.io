@@ -28,6 +28,7 @@ know_about_me:
 
 # Blogs - separate section
 blogs:
+  heading: Explore my writeups & research
   title: Blogs
   description: A collection of personalized writeups, technical notes, and security insights.
   icon: fas fa-pen-fancy

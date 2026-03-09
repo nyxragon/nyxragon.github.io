@@ -27,7 +27,7 @@ layout: default
   </section>
 
   <section class="home-section">
-    <h2 class="section-heading">Blogs</h2>
+    <h2 class="section-heading">{{ site.data.sections.blogs.heading | default: "Blogs" }}</h2>
     <div class="section-cards">
       {% assign blogs = site.data.sections.blogs %}
       <a href="{{ blogs.url | relative_url }}" class="section-card section-card-animate" style="--accent: {{ blogs.accent }}; --card-anim-delay: 4;">
