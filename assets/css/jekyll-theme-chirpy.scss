@@ -1,0 +1,112 @@
+---
+---
+
+/* prettier-ignore */
+@use 'main{% if jekyll.environment == "production" %}.bundle{% endif %}';
+
+/* ========== Custom Portfolio Overhaul ========== */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --portfolio-accent: #00d4aa;
+  --portfolio-accent-dim: rgba(0, 212, 170, 0.15);
+  --portfolio-card-bg: #252525;
+  --portfolio-card-border: rgba(255, 255, 255, 0.08);
+  --portfolio-heading-font: 'Outfit', -apple-system, sans-serif;
+  --portfolio-mono-font: 'JetBrains Mono', monospace;
+}
+
+html[data-mode="light"] {
+  --portfolio-card-bg: #f6f6f6;
+  --portfolio-card-border: rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-mode="dark"]) {
+    --portfolio-card-bg: #f6f6f6;
+    --portfolio-card-border: rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Typography */
+#main-wrapper,
+.content {
+  --content-font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --heading-font-family: 'Outfit', -apple-system, sans-serif;
+  line-height: 1.65;
+}
+
+#main-wrapper h1,
+.content h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+#main-wrapper h2,
+.content h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+#main-wrapper h3,
+.content h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Links */
+#main-wrapper a:not(.btn):not(.section-card),
+.content a:not(.btn):not(.section-card) {
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+#main-wrapper a:hover:not(.btn):not(.section-card),
+.content a:hover:not(.btn):not(.section-card) {
+  opacity: 0.85;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Scroll-triggered animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+}
+
+.animate-on-scroll.animate-on-scroll-visible {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll {
+    opacity: 1;
+  }
+  .animate-on-scroll.animate-on-scroll-visible {
+    animation: none;
+  }
+}

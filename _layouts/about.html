@@ -1,0 +1,122 @@
+---
+layout: default
+script_includes:
+  - scroll-animate
+---
+
+{% include lang.html %}
+
+<div class="about-page">
+  <div class="about-intro animate-on-scroll">
+    <div class="about-avatar-wrap">
+      <img src="{{ site.avatar | relative_url }}" alt="{{ site.social.name }}" class="about-avatar" />
+    </div>
+    <div class="about-bio">
+      <h1 class="about-name">{{ site.social.name }}</h1>
+      <p class="about-handle">{{ site.tagline | strip_html }}</p>
+      <div class="about-text">
+        {{ site.data.about.intro | markdownify }}
+      </div>
+    </div>
+  </div>
+
+  <div class="about-links animate-on-scroll">
+    {% for link in site.social.links %}
+    <a href="{{ link }}" target="_blank" rel="noopener" class="about-link">
+      <i class="fas fa-external-link-alt"></i>
+      {{ link | replace: 'https://', '' | replace: 'http://', '' | split: '/' | first }}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.about-page {
+  padding: 1rem 0 3rem;
+  max-width: 720px;
+}
+
+.about-intro {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.about-avatar-wrap {
+  flex-shrink: 0;
+}
+
+.about-avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 2px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.about-bio {
+  flex: 1;
+  min-width: 0;
+}
+
+.about-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.about-handle {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin: 0 0 1.25rem;
+}
+
+.about-text {
+  line-height: 1.7;
+  opacity: 0.95;
+}
+
+.about-text p {
+  margin-bottom: 1rem;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+.about-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: var(--portfolio-accent);
+  background: var(--portfolio-accent-dim, rgba(0,212,170,0.15));
+  border: 1px solid color-mix(in srgb, var(--portfolio-accent) 35%, transparent);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.about-link:hover {
+  border-color: var(--portfolio-accent);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  .about-intro {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+</style>

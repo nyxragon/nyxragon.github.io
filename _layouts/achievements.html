@@ -1,0 +1,169 @@
+---
+layout: default
+script_includes:
+  - scroll-animate
+---
+
+{% include lang.html %}
+
+<div class="achievements-page">
+  <h1 class="achievements-title">Achievements</h1>
+
+  <ul class="achievements-list">
+    {% for item in site.data.achievements.achievements %}
+    <li class="achievement-item animate-on-scroll">
+      {{ item.text }}
+      {% if item.subpoints %}
+      <ul class="achievement-subpoints">
+        {% for sub in item.subpoints %}
+        <li>{{ sub }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+
+  <h2 class="achievements-section-title">Hall of Fame / Acknowledgements</h2>
+  <p class="achievements-intro">{{ site.data.achievements.hall_of_fame.intro }}</p>
+  <div class="hof-grid">
+    {% for org in site.data.achievements.hall_of_fame.organizations %}
+    <span class="hof-badge">{{ org }}</span>
+    {% endfor %}
+  </div>
+
+  <h2 class="achievements-section-title">Certifications</h2>
+  <div class="certifications-grid">
+    {% for cert in site.data.achievements.certifications %}
+    <div class="cert-card animate-on-scroll">
+      <span class="cert-icon"><i class="{{ cert.icon }}"></i></span>
+      <div class="cert-content">
+        <strong class="cert-name">{{ cert.name }}</strong>
+        <span class="cert-validity">Validity: {{ cert.validity }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.achievements-page {
+  padding: 1rem 0 3rem;
+  max-width: 800px;
+}
+
+.achievements-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.achievements-section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.achievements-intro {
+  opacity: 0.9;
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+}
+
+.achievements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.achievement-item {
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  border-radius: 10px;
+  background: var(--portfolio-card-bg, #252525);
+  border: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
+  line-height: 1.6;
+  transition: border-color 0.2s ease;
+}
+
+.achievement-item:hover {
+  border-color: var(--portfolio-accent);
+}
+
+.achievement-subpoints {
+  margin: 0.75rem 0 0 1px;
+  padding-left: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.achievement-subpoints li {
+  margin-bottom: 0.25rem;
+}
+
+.hof-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.hof-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: var(--portfolio-accent-dim, rgba(0,212,170,0.15));
+  color: var(--portfolio-accent);
+  border: 1px solid color-mix(in srgb, var(--portfolio-accent) 40%, transparent);
+}
+
+.certifications-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cert-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background: var(--portfolio-card-bg, #252525);
+  border: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cert-card:hover {
+  border-color: var(--portfolio-accent);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.cert-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--portfolio-accent-dim, rgba(0,212,170,0.15));
+  color: var(--portfolio-accent);
+  font-size: 1.25rem;
+}
+
+.cert-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cert-name {
+  font-size: 1.1rem;
+}
+
+.cert-validity {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+</style>

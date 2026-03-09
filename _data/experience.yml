@@ -1,0 +1,87 @@
+# Work Experience - edit this file to update the employment page
+
+experience:
+  - company: HackerOne
+    url: https://www.hackerone.com/
+    location: Remote
+    roles:
+      - title: Triage Intake Analyst
+        dates: March 2025 - Present
+        bullets:
+          - Performing **intake and triage** for high-volume security reports across various bug bounty programs
+          - **Analyzing and validating** reported vulnerabilities, assessing severity, and facilitating coordination between researchers and program teams
+          - Ensuring **quality and timely processing** of reports before handoff to program teams for remediation
+          - Providing **global triage support** through US shift hours for bug bounty programs worldwide
+
+  - company: Zeron
+    url: https://zeron.one
+    location: Mumbai, India
+    roles:
+      - title: Research and Development Associate
+        dates: July 2024 - Present
+        bullets:
+          - Planning and implementing various AI initiatives
+          - Creating a custom Linux distribution for Zeron
+          - Developing tools for the ASM (Attack Surface Management) platform
+      - title: Security Researcher Intern
+        dates: August 2023 - June 2024
+        bullets:
+          - Researching security in various technology disciplines
+          - Proposing solutions for security-related issues
+          - Developing custom tools for features of ASM (Attack Surface Management) Platform
+      - title: Intern
+        dates: April 2023 - July 2023
+        bullets:
+          - Performing **Web Application Penetration Testing** on client web application
+          - Performing **Mobile Pentest** on client mobile application
+          - Assisting **C-level Executives** with necessary tasks
+          - Providing **Technical Content** to the **Social Media Team**
+
+  - company: Securityium
+    url: https://www.securityium.com/
+    location: Pune, India
+    roles:
+      - title: Cybersecurity Intern
+        dates: Jan 2023 - April 2023
+        bullets:
+          - **Web Application** Penetration Testing for client websites
+          - **Network** Penetration Testing on client network
+          - **Docker** Penetration Testing on docker containers
+          - Developing tools using **Fast API, Docker, Python,** and **Bash** that aided in automation
+          - Setup a **Pentesting Lab Environment**
+
+  - company: Virtually Testing Foundation
+    url: https://virtuallytestingfoundation.org/
+    location: Los Angeles, CA (Remote)
+    roles:
+      - title: Cybersecurity Engineer Intern
+        dates: Jan 2023 - April 2023
+        bullets:
+          - **Web Application Pentesting**
+          - **OSINT**
+          - **MITRE ATT&CK Framework**
+          - **SPLUNK**
+
+education:
+  - name: Pune Institute of Computer Technology
+    url: https://pict.edu
+    location: Pune, India
+    degree: BE-Information Technology Grade 8.84
+    dates: June 2020 - June 2024
+
+  - name: Vivekanand College
+    url: "#"
+    location: Chatrapati Sambhajinagar, India
+    degree: HSC
+    dates: June 2018 - June 2020
+    notes:
+      - HSC Examination College Rank-1
+      - HSC Examination State Subject Topper - Maths 100/100
+
+  - name: Cambridge School
+    url: "#"
+    location: Chatrapati Sambhajinagar, India
+    degree: ICSE
+    dates: June 2008 - June 2018
+    notes:
+      - Percentage 93.4%

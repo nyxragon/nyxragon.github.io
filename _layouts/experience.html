@@ -1,0 +1,221 @@
+---
+layout: default
+script_includes:
+  - scroll-animate
+---
+
+{% include lang.html %}
+
+<div class="experience-page">
+  <h1 class="experience-title">Work Experience</h1>
+
+  <div class="experience-timeline">
+    {% for employer in site.data.experience.experience %}
+    <div class="experience-block animate-on-scroll">
+      <div class="experience-company">
+        <a href="{{ employer.url }}" target="_blank" rel="noopener" class="experience-company-link">{{ employer.company }}</a>
+        <span class="experience-location">{{ employer.location }}</span>
+      </div>
+
+      {% for role in employer.roles %}
+      <div class="experience-role">
+        <div class="experience-role-header">
+          <strong class="experience-role-title">{{ role.title }}</strong>
+          <span class="experience-role-dates">{{ role.dates }}</span>
+        </div>
+        <ul class="experience-bullets">
+          {% for bullet in role.bullets %}
+          <li>{{ bullet | markdownify }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <h2 class="experience-section-title">Education</h2>
+
+  <div class="education-timeline">
+    {% for school in site.data.experience.education %}
+    <div class="education-block animate-on-scroll">
+      <div class="education-header">
+        <a href="{{ school.url }}" target="_blank" rel="noopener" class="education-name">{{ school.name }}</a>
+        <span class="education-location">{{ school.location }}</span>
+      </div>
+      <div class="education-details">
+        <span class="education-degree">{{ school.degree }}</span>
+        <span class="education-dates">{{ school.dates }}</span>
+      </div>
+      {% if school.notes %}
+      <ul class="education-notes">
+        {% for note in school.notes %}
+        <li>{{ note }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.experience-page {
+  padding: 1rem 0 3rem;
+  max-width: 800px;
+}
+
+.experience-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.experience-section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
+}
+
+.experience-timeline,
+.education-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.experience-block,
+.education-block {
+  padding: 1.5rem 1.75rem;
+  border-radius: 12px;
+  background: var(--portfolio-card-bg, #252525);
+  border: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.experience-block:hover,
+.education-block:hover {
+  border-color: var(--portfolio-accent);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.experience-company {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.experience-company-link {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--portfolio-accent);
+}
+
+.experience-company-link:hover {
+  text-decoration: underline;
+}
+
+.experience-location {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.experience-role {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.06));
+}
+
+.experience-role:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.experience-role-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.experience-role-title {
+  font-size: 1.05rem;
+}
+
+.experience-role-dates {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.experience-bullets {
+  margin: 0;
+  padding-left: 1.25rem;
+  line-height: 1.6;
+}
+
+.experience-bullets li {
+  margin-bottom: 0.4rem;
+}
+
+.experience-bullets li:last-child {
+  margin-bottom: 0;
+}
+
+.education-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.education-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--portfolio-accent);
+}
+
+.education-name:hover {
+  text-decoration: underline;
+}
+
+.education-location {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.education-details {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.education-degree {
+  font-weight: 500;
+}
+
+.education-dates {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.education-notes {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 0.95rem;
+}
+</style>

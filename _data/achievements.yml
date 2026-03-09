@@ -1,0 +1,27 @@
+# Achievements and Certifications - edit this file to update the page
+
+achievements:
+  - text: Delivered multiple sessions in security conferences and events, including popular ones like BSIDES and OWASP.
+  - text: Secured 7th rank out of 22,000 participants and received scholarship and internship opportunities in the GetSetHack contest organized by ThriveDX and RISE.
+  - text: JR. College Topper and State Subject Topper - HSC 2020
+    subpoints:
+      - Secured 1st rank in Vivekanand College
+      - State 1st Rank in Mathematics with a perfect score of 100/100
+
+hall_of_fame:
+  intro: During my college days, I was actively involved in bug hunting and received the following acknowledgements for reporting security vulnerabilities.
+  organizations:
+    - United Nations
+    - Cambridge University
+    - Indian Government
+    - Philips
+    - Deutsche Telekom
+    - Drexel University
+    - Nykaa
+    - Textr App
+    - Touch Bistro
+
+certifications:
+  - name: eJPTv2
+    validity: August 2023 - August 2026
+    icon: fas fa-shield-halved
