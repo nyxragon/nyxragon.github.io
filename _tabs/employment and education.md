@@ -6,8 +6,16 @@ order: 4
 
 # Work Experience
 
+### [HackerOne](https://www.hackerone.com/) <span style="font-size:large;float: right;">Remote</span>
 
+> **Triage Intake Analyst <span style="float: right;">March 2025 - Present </span><br>**
+As a Triage Intake Analyst at HackerOne, I support multiple bug bounty programs by:
+- Performing **intake and triage** for high-volume security reports across various bug bounty programs
+- **Analyzing and validating** reported vulnerabilities, assessing severity, and facilitating coordination between researchers and program teams
+- Ensuring **quality and timely processing** of reports before handoff to program teams for remediation
+- Providing **global triage support** through US shift hours for bug bounty programs worldwide
 
+---
 ### [Zeron](https://zeron.one) <span style="font-size:large;float: right;">Mumbai,India</span>
 
 > **Research and Development Associate <span style="float: right;">July 2024 - Present </span><br>**
