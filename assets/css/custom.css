@@ -88,7 +88,8 @@ html {
   }
 }
 
-.animate-on-scroll {
+/* Only hide when JS has run - ensures content is visible if script fails */
+html.scroll-animate-ready .animate-on-scroll {
   opacity: 0;
 }
 
@@ -97,7 +98,7 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-on-scroll {
+  html.scroll-animate-ready .animate-on-scroll {
     opacity: 1;
   }
   .animate-on-scroll.animate-on-scroll-visible {

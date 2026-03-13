@@ -2,6 +2,7 @@
   if (typeof document === 'undefined' || !('IntersectionObserver' in window)) return;
 
   function init() {
+    document.documentElement.classList.add('scroll-animate-ready');
     const observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -15,7 +16,6 @@
     );
 
     document.querySelectorAll('.animate-on-scroll').forEach(function (el) {
-      el.style.opacity = '0';
       observer.observe(el);
     });
   }
