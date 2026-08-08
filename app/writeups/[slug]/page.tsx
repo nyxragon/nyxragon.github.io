@@ -8,7 +8,11 @@ import { formatDate, typeColor, typeLabel } from "@/lib/utils";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  return getAllWriteups().map((entry) => ({ slug: entry.slug }));
+  const slugs = getAllWriteups().map((entry) => ({ slug: entry.slug }));
+  // output: "export" requires at least one static param for a dynamic route —
+  // fall back to a placeholder that resolves to notFound() when there are no
+  // published writeups yet (e.g. everything is still a draft).
+  return slugs.length > 0 ? slugs : [{ slug: "_none" }];
 }
 
 export async function generateMetadata({

@@ -20,3 +20,9 @@ out
 
 # Misc
 assets/js/dist
+
+# Instruction/internal docs and drafts — not for the public repo
+README.md
+CONTENT.md
+_drafts/
+content/writeups/_drafts/
