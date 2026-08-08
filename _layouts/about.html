@@ -6,117 +6,228 @@ script_includes:
 
 {% include lang.html %}
 
-<div class="about-page">
-  <div class="about-intro animate-on-scroll">
-    <div class="about-avatar-wrap">
-      <img src="{{ site.avatar | relative_url }}" alt="{{ site.social.name }}" class="about-avatar" />
+{% assign current_job = site.data.experience.experience | first %}
+{% assign current_role = current_job.roles | first %}
+
+<div class="ab-page">
+
+  <!-- Current status callout -->
+  <div class="ab-status animate-on-scroll">
+    <span class="ab-status-dot" aria-hidden="true"></span>
+    <span class="ab-status-text">Currently: <strong>{{ current_role.title }}</strong> at <strong>{{ current_job.company }}</strong></span>
+  </div>
+
+  <!-- Intro -->
+  <div class="ab-intro animate-on-scroll">
+    <div class="ab-avatar-wrap">
+      <img src="{{ site.avatar | relative_url }}" alt="{{ site.social.name }}" class="ab-avatar" />
     </div>
-    <div class="about-bio">
-      <h1 class="about-name">{{ site.social.name }}</h1>
-      <p class="about-handle">{{ site.tagline | strip_html }}</p>
-      <div class="about-text">
+    <div class="ab-bio">
+      <h1 class="ab-name">{{ site.social.name }}</h1>
+      <p class="ab-handle">a.k.a nyxragon</p>
+      <div class="ab-text">
         {{ site.data.about.intro | markdownify }}
       </div>
     </div>
   </div>
 
-  <div class="about-links animate-on-scroll">
-    {% for link in site.social.links %}
-    <a href="{{ link }}" target="_blank" rel="noopener" class="about-link">
-      <i class="fas fa-external-link-alt"></i>
-      {{ link | replace: 'https://', '' | replace: 'http://', '' | split: '/' | first }}
-    </a>
-    {% endfor %}
+  <!-- Skills -->
+  {% if site.data.about.skills %}
+  <div class="ab-skills animate-on-scroll">
+    <h2 class="ab-section-label">Skills &amp; Tools</h2>
+    <div class="ab-chips">
+      {% for skill in site.data.about.skills %}
+      <span class="ab-chip">{{ skill }}</span>
+      {% endfor %}
+    </div>
   </div>
+  {% endif %}
+
+  <!-- Social links -->
+  <div class="ab-links animate-on-scroll">
+    <h2 class="ab-section-label">Find me on</h2>
+    <div class="ab-links-row">
+      {% for link in site.social.links %}
+      {% assign domain = link | replace: 'https://', '' | replace: 'http://', '' | split: '/' | first %}
+      {% if domain contains 'github' %}
+        {% assign link_icon = 'fab fa-github' %}
+        {% assign link_label = 'GitHub' %}
+      {% elsif domain contains 'twitter' or domain contains 'x.com' %}
+        {% assign link_icon = 'fab fa-x-twitter' %}
+        {% assign link_label = 'Twitter / X' %}
+      {% elsif domain contains 'linkedin' %}
+        {% assign link_icon = 'fab fa-linkedin' %}
+        {% assign link_label = 'LinkedIn' %}
+      {% else %}
+        {% assign link_icon = 'fas fa-external-link-alt' %}
+        {% assign link_label = domain %}
+      {% endif %}
+      <a href="{{ link }}" target="_blank" rel="noopener" class="ab-link">
+        <i class="{{ link_icon }}" aria-hidden="true"></i>
+        {{ link_label }}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+
 </div>
 
 <style>
-.about-page {
+.ab-page {
   padding: 1rem 0 3rem;
   max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
-.about-intro {
+/* Status callout */
+.ab-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem;
+  border-radius: 100px;
+  background: color-mix(in srgb, var(--portfolio-accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--portfolio-accent) 35%, transparent);
+  font-size: 0.88rem;
+  align-self: flex-start;
+}
+
+.ab-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--portfolio-accent);
+  box-shadow: 0 0 6px var(--portfolio-accent);
+  flex-shrink: 0;
+  animation: ab-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ab-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* Intro */
+.ab-intro {
   display: flex;
   gap: 2rem;
   align-items: flex-start;
   flex-wrap: wrap;
-  margin-bottom: 2rem;
 }
 
-.about-avatar-wrap {
+.ab-avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 2px solid var(--portfolio-card-border, rgba(255,255,255,0.1));
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
   flex-shrink: 0;
 }
 
-.about-avatar {
-  width: 140px;
-  height: 140px;
-  border-radius: 16px;
-  object-fit: cover;
-  border: 2px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-}
-
-.about-bio {
+.ab-bio {
   flex: 1;
   min-width: 0;
 }
 
-.about-name {
-  font-size: 1.6rem;
+.ab-name {
+  font-size: 1.65rem;
   font-weight: 700;
-  margin: 0 0 0.25rem;
+  margin: 0 0 0.2rem;
 }
 
-.about-handle {
-  font-size: 1rem;
-  opacity: 0.8;
-  margin: 0 0 1.25rem;
+.ab-handle {
+  font-size: 0.9rem;
+  font-family: var(--portfolio-mono-font, monospace);
+  color: var(--portfolio-accent);
+  margin: 0 0 1rem;
+  opacity: 0.85;
 }
 
-.about-text {
+.ab-text {
   line-height: 1.7;
-  opacity: 0.95;
+  opacity: 0.9;
 }
 
-.about-text p {
-  margin-bottom: 1rem;
+.ab-text p { margin-bottom: 0.85rem; }
+.ab-text p:last-child { margin-bottom: 0; }
+
+/* Section label */
+.ab-section-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin: 0 0 0.75rem;
 }
 
-.about-text p:last-child {
-  margin-bottom: 0;
-}
-
-.about-links {
+/* Skills */
+.ab-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
-.about-link {
+.ab-chip {
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--portfolio-card-bg, #252525);
+  border: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.1));
+  transition: border-color 0.2s ease, color 0.2s ease;
+  cursor: default;
+}
+
+.ab-chip:hover {
+  border-color: var(--portfolio-accent);
+  color: var(--portfolio-accent);
+}
+
+/* Social links */
+.ab-links-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.ab-link {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 500;
   text-decoration: none;
   color: var(--portfolio-accent);
-  background: var(--portfolio-accent-dim, rgba(0,212,170,0.15));
-  border: 1px solid color-mix(in srgb, var(--portfolio-accent) 35%, transparent);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  background: color-mix(in srgb, var(--portfolio-accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--portfolio-accent) 30%, transparent);
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.about-link:hover {
+.ab-link:hover {
   border-color: var(--portfolio-accent);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--portfolio-accent) 20%, transparent);
 }
 
-@media (max-width: 600px) {
-  .about-intro {
+@media (max-width: 580px) {
+  .ab-intro {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
+  .ab-chips {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ab-status-dot { animation: none; }
+  .ab-link:hover { transform: none; }
 }
 </style>

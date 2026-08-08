@@ -54,14 +54,14 @@ html[data-mode="light"] {
 }
 
 /* Links */
-#main-wrapper a:not(.btn):not(.section-card),
-.content a:not(.btn):not(.section-card) {
+#main-wrapper a:not(.btn):not(.section-card):not(.hm-card):not(.hm-btn):not(.ab-link):not(.exp-company-name):not(.edu-name),
+.content a:not(.btn):not(.section-card):not(.hm-card):not(.hm-btn):not(.ab-link):not(.exp-company-name):not(.edu-name) {
   text-underline-offset: 3px;
   transition: opacity 0.2s ease, text-decoration-color 0.2s ease;
 }
 
-#main-wrapper a:hover:not(.btn):not(.section-card),
-.content a:hover:not(.btn):not(.section-card) {
+#main-wrapper a:hover:not(.btn):not(.section-card):not(.hm-card):not(.hm-btn):not(.ab-link):not(.exp-company-name):not(.edu-name),
+.content a:hover:not(.btn):not(.section-card):not(.hm-card):not(.hm-btn):not(.ab-link):not(.exp-company-name):not(.edu-name) {
   opacity: 0.85;
 }
 

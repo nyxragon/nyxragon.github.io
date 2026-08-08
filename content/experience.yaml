@@ -1,0 +1,80 @@
+experience:
+  - company: HackerOne
+    url: https://www.hackerone.com/
+    logo: /images/logos/hackerone.png
+    location: Remote
+    roles:
+      - title: Product Security Analyst
+        dates: Jul 2026 – Present
+        bullets: []
+      - title: Triage Intake Analyst
+        dates: Mar 2025 – Jul 2026
+        bullets: []
+
+  - company: Zeron
+    url: https://zeron.one
+    logo: /images/logos/zeron.png
+    location: Mumbai, India
+    roles:
+      - title: Research And Development Associate
+        dates: Jul 2024 – Jan 2025
+        bullets:
+          - "Performed AI Red Teaming for clients and assisted them with secure LLM deployments."
+          - "Built specialized detection tools that enriched capabilities of the attack surface management platform."
+          - "Designed and developed the PII Discovery Layer and integrated it with Google Services for PIIScout, which was showcased at Black Hat MEA Arsenal in Riyadh."
+          - "Designed and fine-tuned cost-effective in-house LLM models and led LLM integrations across multiple product features."
+          - "Developed a customized Linux distribution tailored to client requirements."
+      - title: Security Researcher Intern
+        dates: Apr 2023 – Jul 2024
+        bullets:
+          - "Designed and implemented detection features for the attack surface management platform."
+          - "Conducted web application and external network penetration tests for clients."
+          - "Provided cybersecurity-focused technical content and research insights to the social media team."
+
+  - company: Securityium
+    url: https://www.securityium.com/
+    logo: /images/logos/securityium.png
+    location: Pune, Maharashtra, India
+    roles:
+      - title: Cybersecurity Intern
+        dates: Jan 2023 – Apr 2023
+        bullets:
+          - "Conducted Web Application Pentests and External Network Pentests for clients."
+          - "Created Docker security scanning tools."
+          - "Set up a Penetration Testing Lab."
+          - "Developed automation tools using FastAPI, Python, Bash, and Docker."
+
+  - company: Virtually Testing Foundation
+    url: https://virtuallytestingfoundation.org/
+    logo: /images/logos/vtf.png
+    location: Los Angeles, CA (Remote)
+    roles:
+      - title: Cybersecurity Engineer Intern
+        dates: May 2022 – Jul 2022
+        bullets: []
+
+education:
+  - name: Pune Institute of Computer Technology
+    url: https://pict.edu
+    logo: /images/logos/pict.png
+    location: Pune, India
+    degree: BE-Information Technology Grade 8.84
+    dates: June 2020 - June 2024
+
+  - name: Vivekanand College
+    url: "#"
+    logo: /images/logos/vivekanand.png
+    location: Chatrapati Sambhajinagar, India
+    degree: HSC
+    dates: June 2018 - June 2020
+    notes:
+      - HSC Examination College Rank-1
+      - HSC Examination State Subject Topper - Maths 100/100
+
+  - name: Cambridge School
+    url: "#"
+    location: Chatrapati Sambhajinagar, India
+    degree: ICSE
+    dates: June 2008 - June 2018
+    notes:
+      - Percentage 93.4%

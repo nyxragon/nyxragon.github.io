@@ -1,0 +1,35 @@
+achievements:
+  - text: Delivered multiple sessions in security conferences and events, including popular ones like BSIDES and OWASP.
+  - text: Secured 7th rank out of 22,000 participants and received scholarship and internship opportunities in the GetSetHack contest organized by ThriveDX and RISE.
+  - text: JR. College Topper and State Subject Topper - HSC 2020
+    subpoints:
+      - Secured 1st rank in Vivekanand College
+      - State 1st Rank in Mathematics with a perfect score of 100/100
+
+hall_of_fame:
+  intro: During my college days, I was actively involved in bug hunting and received the following acknowledgements for reporting security vulnerabilities.
+  organizations:
+    - United Nations
+    - Cambridge University
+    - Indian Government
+    - Philips
+    - Deutsche Telekom
+    - Drexel University
+    - Nykaa
+    - Textr App
+    - Touch Bistro
+
+cves:
+  - target: yzane Markdown PDF
+    description: Popular VS Code extension with over 2.2 million downloads, used for converting Markdown into PDF and other file formats.
+    ids:
+      - CVE-2024-7738
+      - CVE-2024-7739
+
+certifications:
+  - name: eJPTv2
+    issuer: INE Security
+    description: Entry-level penetration testing cert covering network, web, and host-based attack techniques.
+  - name: ISO 27001 Lead Auditor
+    issuer: CQI & IRCA
+    description: Qualified to plan and manage information security management system audits.

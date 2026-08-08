@@ -6,3 +6,16 @@ intro: |
   Previously at Zeron (R&D), Securityium, and Virtually Testing Foundation. Delivered sessions at BSIDES, OWASP, and other security events. Hall of Fame acknowledgements from UN, Cambridge, Philips, and others.
 
   Always learning, always breaking things (ethically).
+
+skills:
+  - Web App Pentesting
+  - Bug Bounty Triage
+  - Network Pentesting
+  - OSINT
+  - Vulnerability Research
+  - Python
+  - Bash Scripting
+  - Docker
+  - FastAPI
+  - MITRE ATT&CK
+  - SPLUNK

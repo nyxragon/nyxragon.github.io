@@ -1,0 +1,20 @@
+name: Abhijeet Ingle
+handle: nyxragon
+tagline: Security Researcher
+headline: Endlessly curious about how tech works (and breaks).
+description: Portfolio and personal site of Abhijeet Ingle — security researcher, bug bounty analyst, and conference speaker.
+url: https://nyxragon.in
+avatar: /images/nyxragon.png
+links:
+  - label: GitHub
+    url: https://github.com/nyxragon
+  - label: LinkedIn
+    url: https://www.linkedin.com/in/nyxragon
+  - label: X
+    url: https://x.com/nyxragon
+focus:
+  - AI Red Teaming
+  - OSINT & Recon
+  - Attack Surface Management
+  - Lifelong Learner
+mantra: probe → build → automate

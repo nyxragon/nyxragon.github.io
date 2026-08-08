@@ -1,0 +1,46 @@
+talks:
+  - id: bsides_pune
+    type: talk
+    title: BSIDES Pune
+    topic: JWT Attacks
+    description: Delivered a session on JWT Attacks at the BSIDES Pune Security Conference.
+    images:
+      - url: /images/bsides1.jpg
+        alt: BSIDES Pune Image 1
+      - url: /images/bsides2.jpeg
+        alt: BSIDES Pune Image 2
+      - url: /images/bsides3.jpeg
+        alt: BSIDES Pune Image 3
+      - url: /images/bsides4.jpeg
+        alt: BSIDES Pune Image 4
+
+  - id: owasp_noida
+    type: talk
+    title: OWASP Noida
+    topic: BAC and IDOR
+    description: Presented at OWASP Noida on BAC and IDOR vulnerabilities.
+    images:
+      - url: /images/owaspnoida.jpeg
+        alt: OWASP Noida
+
+  - id: zeron_fireside
+    type: talk
+    title: Zeron Fireside Chat
+    topic: Attack Surface Factor
+    description: "Invited to a Fireside Chat by Zeron on the topic: The Attack Surface Factor — Elevating or Reducing Your Cyber Value at Risk?"
+    images:
+      - url: /images/zeron_fireside.jpeg
+        alt: Zeron Fireside Image 1
+      - url: /images/zeron_fireside2.png
+        alt: Zeron Fireside Image 2
+
+  - id: pict_college
+    type: session
+    title: PICT College
+    topic: Ethical Hacking
+    description: Conducted a workshop on ethical hacking at PICT College.
+    images:
+      - url: /images/pict1.jpeg
+        alt: PICT College Image 1
+      - url: /images/pict2.jpeg
+        alt: PICT College Image 2

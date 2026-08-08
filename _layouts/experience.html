@@ -6,216 +6,282 @@ script_includes:
 
 {% include lang.html %}
 
-<div class="experience-page">
-  <h1 class="experience-title">Work Experience</h1>
+<div class="exp-page">
 
-  <div class="experience-timeline">
+  <h1 class="exp-page-title">Work Experience</h1>
+
+  <div class="exp-timeline">
     {% for employer in site.data.experience.experience %}
-    <div class="experience-block animate-on-scroll">
-      <div class="experience-company">
-        <a href="{{ employer.url }}" target="_blank" rel="noopener" class="experience-company-link">{{ employer.company }}</a>
-        <span class="experience-location">{{ employer.location }}</span>
-      </div>
-
-      {% for role in employer.roles %}
-      <div class="experience-role">
-        <div class="experience-role-header">
-          <strong class="experience-role-title">{{ role.title }}</strong>
-          <span class="experience-role-dates">{{ role.dates }}</span>
+    <div class="exp-block animate-on-scroll">
+      <div class="exp-dot" aria-hidden="true"></div>
+      <div class="exp-block-inner">
+        <div class="exp-company-row">
+          <a href="{{ employer.url }}" target="_blank" rel="noopener" class="exp-company-name">{{ employer.company }}</a>
+          <span class="exp-location"><i class="fas fa-location-dot" aria-hidden="true"></i> {{ employer.location }}</span>
         </div>
-        <ul class="experience-bullets">
-          {% for bullet in role.bullets %}
-          <li>{{ bullet | markdownify }}</li>
+
+        {% for role in employer.roles %}
+        <div class="exp-role">
+          <div class="exp-role-header">
+            <span class="exp-role-title">{{ role.title }}</span>
+            <span class="exp-role-dates"><i class="far fa-calendar-alt" aria-hidden="true"></i> {{ role.dates }}</span>
+          </div>
+          <ul class="exp-bullets">
+            {% for bullet in role.bullets %}
+            <li>{{ bullet | markdownify | remove: '<p>' | remove: '</p>' }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <h2 class="exp-section-title">Education</h2>
+
+  <div class="edu-list">
+    {% for school in site.data.experience.education %}
+    <div class="edu-block animate-on-scroll">
+      <div class="edu-dot" aria-hidden="true"></div>
+      <div class="edu-block-inner">
+        <div class="edu-header">
+          <a href="{{ school.url }}" target="_blank" rel="noopener" class="edu-name">{{ school.name }}</a>
+          <span class="edu-location"><i class="fas fa-location-dot" aria-hidden="true"></i> {{ school.location }}</span>
+        </div>
+        <div class="edu-meta">
+          <span class="edu-degree">{{ school.degree }}</span>
+          <span class="edu-dates"><i class="far fa-calendar-alt" aria-hidden="true"></i> {{ school.dates }}</span>
+        </div>
+        {% if school.notes %}
+        <ul class="edu-notes">
+          {% for note in school.notes %}
+          <li>{{ note }}</li>
           {% endfor %}
         </ul>
+        {% endif %}
       </div>
-      {% endfor %}
     </div>
     {% endfor %}
   </div>
 
-  <h2 class="experience-section-title">Education</h2>
-
-  <div class="education-timeline">
-    {% for school in site.data.experience.education %}
-    <div class="education-block animate-on-scroll">
-      <div class="education-header">
-        <a href="{{ school.url }}" target="_blank" rel="noopener" class="education-name">{{ school.name }}</a>
-        <span class="education-location">{{ school.location }}</span>
-      </div>
-      <div class="education-details">
-        <span class="education-degree">{{ school.degree }}</span>
-        <span class="education-dates">{{ school.dates }}</span>
-      </div>
-      {% if school.notes %}
-      <ul class="education-notes">
-        {% for note in school.notes %}
-        <li>{{ note }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-    </div>
-    {% endfor %}
-  </div>
 </div>
 
 <style>
-.experience-page {
+.exp-page {
   padding: 1rem 0 3rem;
   max-width: 800px;
 }
 
-.experience-title {
+.exp-page-title {
   font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 2rem;
 }
 
-.experience-section-title {
-  font-size: 1.4rem;
+.exp-section-title {
+  font-size: 1.35rem;
   font-weight: 600;
-  margin-top: 3rem;
-  margin-bottom: 1.5rem;
+  margin: 3rem 0 1.5rem;
   padding-top: 2rem;
   border-top: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
 }
 
-.experience-timeline,
-.education-timeline {
+/* ── Timeline ── */
+.exp-timeline,
+.edu-list {
+  position: relative;
+  padding-left: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 0;
 }
 
-.experience-block,
-.education-block {
-  padding: 1.5rem 1.75rem;
+.exp-timeline::before,
+.edu-list::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--portfolio-accent),
+    color-mix(in srgb, var(--portfolio-accent) 30%, transparent) 60%,
+    transparent 100%
+  );
+}
+
+/* Work block */
+.exp-block,
+.edu-block {
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.exp-block:last-child,
+.edu-block:last-child {
+  padding-bottom: 0;
+}
+
+.exp-dot,
+.edu-dot {
+  position: absolute;
+  left: -1.675rem;
+  top: 1.1rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--portfolio-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--portfolio-accent) 60%, transparent);
+  border: 2px solid var(--portfolio-card-bg, #252525);
+  z-index: 1;
+}
+
+.exp-block-inner,
+.edu-block-inner {
+  padding: 1.25rem 1.5rem;
   border-radius: 12px;
   background: var(--portfolio-card-bg, #252525);
   border: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.experience-block:hover,
-.education-block:hover {
+.exp-block:hover .exp-block-inner,
+.edu-block:hover .edu-block-inner {
   border-color: var(--portfolio-accent);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
 
-.experience-company {
+.exp-block:hover .exp-dot,
+.edu-block:hover .edu-dot {
+  box-shadow: 0 0 16px color-mix(in srgb, var(--portfolio-accent) 80%, transparent);
+}
+
+/* Company row */
+.exp-company-row,
+.edu-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
 }
 
-.experience-company-link {
-  font-size: 1.2rem;
-  font-weight: 600;
+.exp-company-name,
+.edu-name {
+  font-size: 1.15rem;
+  font-weight: 700;
   text-decoration: none;
   color: var(--portfolio-accent);
+  transition: opacity 0.15s;
 }
 
-.experience-company-link:hover {
+.exp-company-name:hover,
+.edu-name:hover {
+  opacity: 0.8;
   text-decoration: underline;
 }
 
-.experience-location {
-  font-size: 0.9rem;
-  opacity: 0.8;
+.exp-location,
+.edu-location {
+  font-size: 0.82rem;
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
-.experience-role {
-  margin-top: 1.25rem;
-  padding-top: 1.25rem;
+/* Role */
+.exp-role {
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
   border-top: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.06));
 }
 
-.experience-role:first-of-type {
+.exp-role:first-of-type {
   margin-top: 0;
   padding-top: 0;
   border-top: none;
 }
 
-.experience-role-header {
+.exp-role-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
 }
 
-.experience-role-title {
-  font-size: 1.05rem;
+.exp-role-title {
+  font-size: 1rem;
+  font-weight: 600;
 }
 
-.experience-role-dates {
-  font-size: 0.9rem;
-  opacity: 0.8;
+.exp-role-dates {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
 }
 
-.experience-bullets {
+.exp-bullets {
   margin: 0;
-  padding-left: 1.25rem;
+  padding-left: 1.1rem;
   line-height: 1.6;
 }
 
-.experience-bullets li {
-  margin-bottom: 0.4rem;
+.exp-bullets li {
+  margin-bottom: 0.35rem;
+  font-size: 0.92rem;
 }
 
-.experience-bullets li:last-child {
-  margin-bottom: 0;
-}
+.exp-bullets li:last-child { margin-bottom: 0; }
 
-.education-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.education-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-decoration: none;
-  color: var(--portfolio-accent);
-}
-
-.education-name:hover {
-  text-decoration: underline;
-}
-
-.education-location {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-.education-details {
+/* Education meta */
+.edu-meta {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
   margin-bottom: 0.5rem;
 }
 
-.education-degree {
+.edu-degree {
   font-weight: 500;
-}
-
-.education-dates {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-.education-notes {
-  margin: 0.5rem 0 0;
-  padding-left: 1.25rem;
   font-size: 0.95rem;
+}
+
+.edu-dates {
+  font-size: 0.82rem;
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.edu-notes {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.edu-notes li { margin-bottom: 0.25rem; }
+
+@media (max-width: 540px) {
+  .exp-timeline,
+  .edu-list {
+    padding-left: 1.5rem;
+  }
+  .exp-dot,
+  .edu-dot {
+    left: -1.175rem;
+  }
 }
 </style>

@@ -1,18 +1,19 @@
-# Bundler cache
+# Bundler cache (legacy Jekyll)
 .bundle
 vendor
 Gemfile.lock
 
-# Jekyll cache
+# Jekyll cache (legacy)
 .jekyll-cache
 _site
 
 # RubyGems
 *.gem
 
-# NPM dependencies
+# Next.js
 node_modules
-package-lock.json
+.next
+out
 
 # IDE configurations
 .idea

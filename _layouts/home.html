@@ -4,212 +4,390 @@ layout: default
 
 {% include lang.html %}
 
-<div class="home-sections">
-  <header class="home-hero">
-    <p class="home-subtitle home-hero-animate">{{ site.tagline }}</p>
-    <p class="home-desc home-hero-animate home-hero-delay">Explore my work, talks, and writings</p>
-  </header>
+<div class="hm-root">
 
-  <section class="home-section">
-    <h2 class="section-heading">Know more about me</h2>
-    <div class="section-cards">
-      {% for section in site.data.sections.know_about_me %}
-      <a href="{{ section.url | relative_url }}" class="section-card section-card-animate" style="--accent: {{ section.accent }}; --card-anim-delay: {{ forloop.index0 }};">
-        <span class="section-card-icon"><i class="{{ section.icon }}"></i></span>
-        <div class="section-card-content">
-          <h3 class="section-card-title">{{ section.title }}</h3>
-          <p class="section-card-desc">{{ section.description }}</p>
+  <!-- ═══ HERO ═══ -->
+  <section class="hm-hero">
+    <div class="hm-hero-body">
+      <div class="hm-avatar-wrap">
+        <img src="{{ site.avatar | relative_url }}" alt="{{ site.social.name }}" class="hm-avatar" />
+      </div>
+      <div class="hm-hero-copy">
+        <span class="hm-handle">~/nyxragon</span>
+        <h1 class="hm-name">{{ site.social.name }}</h1>
+        <p class="hm-role-line">
+          <span id="hm-tw"></span><span class="hm-caret" aria-hidden="true"></span>
+        </p>
+        <div class="hm-btns">
+          <a href="/about/" class="hm-btn hm-btn-solid">
+            <i class="fas fa-user-astronaut" aria-hidden="true"></i> About Me
+          </a>
+          <a href="/blogs/" class="hm-btn hm-btn-outline">
+            <i class="fas fa-pen-fancy" aria-hidden="true"></i> Blogs
+          </a>
         </div>
-        <span class="section-card-arrow"><i class="fas fa-arrow-right"></i></span>
-      </a>
-      {% endfor %}
+      </div>
+    </div>
+
+    <div class="hm-stats">
+      <div class="hm-stat">
+        <span class="hm-stat-n">9+</span>
+        <span class="hm-stat-l">Hall of Fame</span>
+      </div>
+      <span class="hm-sep" aria-hidden="true"></span>
+      <div class="hm-stat">
+        <span class="hm-stat-n">4</span>
+        <span class="hm-stat-l">Conf. Talks</span>
+      </div>
+      <span class="hm-sep" aria-hidden="true"></span>
+      <div class="hm-stat">
+        <span class="hm-stat-n">H1</span>
+        <span class="hm-stat-l">Triage Analyst</span>
+      </div>
+      <span class="hm-sep" aria-hidden="true"></span>
+      <div class="hm-stat">
+        <span class="hm-stat-n">eJPT</span>
+        <span class="hm-stat-l">Certified</span>
+      </div>
     </div>
   </section>
 
-  <section class="home-section">
-    <h2 class="section-heading">{{ site.data.sections.blogs.heading | default: "Blogs" }}</h2>
-    <div class="section-cards">
-      {% assign blogs = site.data.sections.blogs %}
-      <a href="{{ blogs.url | relative_url }}" class="section-card section-card-animate" style="--accent: {{ blogs.accent }}; --card-anim-delay: 4;">
-        <span class="section-card-icon"><i class="{{ blogs.icon }}"></i></span>
-        <div class="section-card-content">
-          <h3 class="section-card-title">{{ blogs.title }}</h3>
-          <p class="section-card-desc">{{ blogs.description }}</p>
-        </div>
-        <span class="section-card-arrow"><i class="fas fa-arrow-right"></i></span>
-      </a>
-    </div>
-  </section>
+  <!-- ═══ NAV CARDS ═══ -->
+  <div class="hm-grid">
+    {% for s in site.data.sections.know_about_me %}
+    <a href="{{ s.url | relative_url }}" class="hm-card" style="--ac: {{ s.accent }}">
+      <span class="hm-card-ico"><i class="{{ s.icon }}" aria-hidden="true"></i></span>
+      <div class="hm-card-body">
+        <strong class="hm-card-title">{{ s.title }}</strong>
+        <span class="hm-card-desc">{{ s.description }}</span>
+      </div>
+      <i class="fas fa-arrow-right hm-card-arr" aria-hidden="true"></i>
+    </a>
+    {% endfor %}
+
+    {% assign bl = site.data.sections.blogs %}
+    <a href="{{ bl.url | relative_url }}" class="hm-card hm-card-wide" style="--ac: {{ bl.accent }}">
+      <span class="hm-card-ico"><i class="{{ bl.icon }}" aria-hidden="true"></i></span>
+      <div class="hm-card-body">
+        <strong class="hm-card-title">{{ bl.title }}</strong>
+        <span class="hm-card-desc">{{ bl.description }}</span>
+      </div>
+      <i class="fas fa-arrow-right hm-card-arr" aria-hidden="true"></i>
+    </a>
+  </div>
+
 </div>
 
 <style>
-.home-sections {
-  padding: 2rem 0 3rem;
-  max-width: 900px;
-  margin: 0 auto;
+.hm-root {
+  padding: 0.5rem 0 3rem;
+  max-width: 860px;
 }
 
-.home-hero {
-  text-align: center;
-  margin-bottom: 3rem;
+/* ── Hero ── */
+.hm-hero {
+  margin-bottom: 1.25rem;
+  padding: 2rem 2rem 1.5rem;
+  border-radius: 16px;
+  background: var(--portfolio-card-bg, #252525);
+  border: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
   position: relative;
+  overflow: hidden;
 }
 
-.home-hero::before {
+.hm-hero::before {
   content: '';
   position: absolute;
-  top: -20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120%;
-  height: 140%;
-  background: radial-gradient(ellipse at center, var(--portfolio-accent-dim, rgba(0,212,170,0.08)) 0%, transparent 70%);
+  inset: 0;
+  background: radial-gradient(ellipse 70% 90% at -5% -10%,
+    color-mix(in srgb, var(--portfolio-accent) 12%, transparent),
+    transparent 65%);
   pointer-events: none;
 }
 
-.home-hero-animate {
-  opacity: 0;
-  animation: homeFadeIn 0.7s ease forwards;
-}
-
-.home-hero-delay {
-  animation-delay: 0.2s;
-  opacity: 0;
-}
-
-@keyframes homeFadeIn {
-  to { opacity: 1; }
-}
-
-.home-subtitle {
-  font-size: 1.15rem;
-  opacity: 0.9;
-  margin-bottom: 0.5rem;
+.hm-hero-body {
+  display: flex;
+  gap: 1.75rem;
+  align-items: center;
+  flex-wrap: wrap;
   position: relative;
 }
 
-.home-desc {
-  font-size: 0.95rem;
-  opacity: 0.75;
-  position: relative;
+.hm-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--portfolio-accent);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--portfolio-accent) 38%, transparent);
+  flex-shrink: 0;
 }
 
-.home-section {
-  margin-bottom: 2.5rem;
+.hm-hero-copy {
+  flex: 1;
+  min-width: 0;
 }
 
-.home-section:last-child {
-  margin-bottom: 0;
-}
-
-.section-heading {
-  font-size: 1.35rem;
-  font-weight: 600;
-  margin: 0 0 1.25rem;
+.hm-handle {
+  font-family: var(--portfolio-mono-font, monospace);
+  font-size: 0.82rem;
+  color: var(--portfolio-accent);
+  display: block;
+  margin-bottom: 0.2rem;
   opacity: 0.9;
 }
 
-.section-cards {
-  display: grid;
-  gap: 1.25rem;
+.hm-name {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.35rem;
+  line-height: 1.1;
 }
 
-.section-card {
+.hm-role-line {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  padding: 1.5rem 1.75rem;
+  font-family: var(--portfolio-mono-font, monospace);
+  font-size: 0.9rem;
+  min-height: 1.4em;
+  margin: 0 0 1rem;
+  opacity: 0.8;
+}
+
+.hm-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  background: var(--portfolio-accent);
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: hm-blink 1s step-end infinite;
+}
+
+@keyframes hm-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.hm-btns {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.hm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hm-btn:hover {
+  transform: translateY(-2px);
+}
+
+.hm-btn-solid {
+  background: var(--portfolio-accent);
+  color: #0d0d0d;
+}
+
+.hm-btn-solid:hover {
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--portfolio-accent) 40%, transparent);
+}
+
+.hm-btn-outline {
+  color: var(--portfolio-accent);
+  background: color-mix(in srgb, var(--portfolio-accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--portfolio-accent) 35%, transparent);
+}
+
+.hm-btn-outline:hover {
+  border-color: var(--portfolio-accent);
+}
+
+/* Stats row */
+.hm-stats {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
+  position: relative;
+  gap: 0;
+}
+
+.hm-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.hm-stat-n {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--portfolio-accent);
+  font-family: var(--portfolio-mono-font, monospace);
+  line-height: 1;
+}
+
+.hm-stat-l {
+  font-size: 0.72rem;
+  opacity: 0.65;
+  margin-top: 0.2rem;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.hm-sep {
+  width: 1px;
+  height: 2rem;
+  background: var(--portfolio-card-border, rgba(255,255,255,0.1));
+  flex-shrink: 0;
+}
+
+/* Cards grid */
+.hm-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.hm-card-wide {
+  grid-column: 1 / -1;
+}
+
+.hm-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.4rem;
   border-radius: 12px;
   text-decoration: none;
   color: inherit;
   background: var(--portfolio-card-bg, #252525);
   border: 1px solid var(--portfolio-card-border, rgba(255,255,255,0.08));
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
-.section-card-animate {
-  opacity: 0;
-  animation: cardFadeIn 0.6s ease forwards;
-  animation-delay: calc(0.1s + var(--card-anim-delay, 0) * 0.08s);
+.hm-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--ac, var(--portfolio-accent));
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2), 0 0 0 1px var(--ac, var(--portfolio-accent));
 }
 
-@keyframes cardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.section-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.25), 0 0 0 1px var(--accent, #00d4aa);
-  border-color: var(--accent, #00d4aa);
-}
-
-@media (prefers-color-scheme: light) {
-  html:not([data-mode="dark"]) .section-card:hover {
-    box-shadow: 0 12px 32px rgba(0,0,0,0.12), 0 0 0 1px var(--accent);
-  }
-}
-
-.section-card-icon {
-  width: 48px;
-  height: 48px;
+.hm-card-ico {
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--accent);
-  font-size: 1.25rem;
+  background: color-mix(in srgb, var(--ac) 16%, transparent);
+  color: var(--ac);
+  font-size: 1.1rem;
   flex-shrink: 0;
-  transition: transform 0.25s ease, background 0.25s ease;
+  transition: transform 0.22s ease;
 }
 
-.section-card:hover .section-card-icon {
-  transform: scale(1.05);
-  background: color-mix(in srgb, var(--accent) 25%, transparent);
+.hm-card:hover .hm-card-ico {
+  transform: scale(1.08);
 }
 
-.section-card-content {
+.hm-card-body {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
-.section-card-title {
-  font-size: 1.15rem;
+.hm-card-title {
+  font-size: 0.98rem;
   font-weight: 600;
-  margin: 0 0 0.35rem 0;
 }
 
-.section-card-desc {
-  font-size: 0.9rem;
-  opacity: 0.75;
-  margin: 0;
-  line-height: 1.45;
+.hm-card-desc {
+  font-size: 0.82rem;
+  opacity: 0.68;
+  line-height: 1.4;
 }
 
-.section-card-arrow {
-  color: var(--accent);
-  opacity: 0.6;
-  transition: transform 0.25s ease, opacity 0.25s ease;
+.hm-card-arr {
+  color: var(--ac);
+  opacity: 0.45;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+  transition: transform 0.22s ease, opacity 0.22s ease;
 }
 
-.section-card:hover .section-card-arrow {
-  transform: translateX(6px);
+.hm-card:hover .hm-card-arr {
+  transform: translateX(4px);
   opacity: 1;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .home-hero-animate,
-  .home-hero-delay,
-  .section-card-animate {
-    animation: none;
-    opacity: 1;
+/* Responsive */
+@media (max-width: 620px) {
+  .hm-hero-body {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .hm-btns {
+    justify-content: center;
+  }
+  .hm-grid {
+    grid-template-columns: 1fr;
+  }
+  .hm-card-wide {
+    grid-column: 1;
+  }
+  .hm-sep {
+    display: none;
+  }
+  .hm-stats {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .hm-stat {
+    flex: 0 0 calc(50% - 0.25rem);
+  }
+  .hm-hero {
+    padding: 1.5rem 1.25rem 1.25rem;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .hm-caret { animation: none; }
+  .hm-btn:hover { transform: none; }
+  .hm-card:hover { transform: none; }
+}
 </style>
+
+<script>
+(function () {
+  var roles = ['Security Researcher', 'Bug Bounty Analyst', 'Conference Speaker', 'Triage Analyst @ HackerOne'];
+  var ri = 0, ci = 0, del = false;
+  var el = document.getElementById('hm-tw');
+  if (!el) return;
+  function tick() {
+    var w = roles[ri];
+    if (!del) {
+      el.textContent = w.slice(0, ++ci);
+      if (ci === w.length) { del = true; setTimeout(tick, 2200); return; }
+      setTimeout(tick, 75);
+    } else {
+      el.textContent = w.slice(0, --ci);
+      if (ci === 0) { del = false; ri = (ri + 1) % roles.length; }
+      setTimeout(tick, 40);
+    }
+  }
+  tick();
+})();
+</script>
