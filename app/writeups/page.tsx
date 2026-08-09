@@ -25,9 +25,7 @@ export default function WriteupsPage() {
       {entries.length === 0 ? (
         <Panel>
           <p className="text-zinc-400 text-sm">
-            No writeups yet. Add one in{" "}
-            <code className="text-violet-300">content/writeups/</code> or run{" "}
-            <code className="text-violet-300">npm run new:writeup</code>.
+            Writeups are in progress — stay tuned.
           </p>
         </Panel>
       ) : (
@@ -64,9 +62,11 @@ export default function WriteupsPage() {
         </div>
       )}
 
-      <p className="mt-8 text-xs text-zinc-600">
-        See CONTENT.md in the repo for how to add entries.
-      </p>
+      {isDev && (
+        <p className="mt-8 text-xs text-zinc-600">
+          See CONTENT.md in the repo for how to add entries.
+        </p>
+      )}
     </div>
   );
 }
