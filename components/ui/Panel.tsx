@@ -38,11 +38,11 @@ export function PageHeader({
   return (
     <header className="mb-8 animate-in">
       {kicker && (
-        <p className="font-mono text-xs uppercase tracking-widest text-violet-400 mb-2">
+        <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)] mb-2">
           {kicker}
         </p>
       )}
-      <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-50">
+      <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight inline-block text-gradient pb-1">
         {title}
       </h1>
       {subtitle && (

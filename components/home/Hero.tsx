@@ -34,7 +34,7 @@ export function Hero({
         </div>
 
         <div className="flex-1 text-center md:text-left min-w-0">
-          <h1 className="text-3xl md:text-4xl font-bold text-zinc-100 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight inline-block text-gradient pb-1">
             {name}
           </h1>
           <p className="mt-1 text-sm text-zinc-400">

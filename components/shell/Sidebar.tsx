@@ -20,7 +20,7 @@ export function Sidebar({ avatar, name, handle }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-[var(--color-border)] bg-[var(--color-bg-elevated)]/90 backdrop-blur-sm min-h-dvh p-6">
+    <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-[var(--color-border)] bg-white/[0.02] backdrop-blur-xl min-h-dvh p-6">
       <Link href="/" className="mb-8 no-underline group">
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-10 rounded-lg overflow-hidden avatar-ring shrink-0">
@@ -52,8 +52,8 @@ export function Sidebar({ avatar, name, handle }: SidebarProps) {
               className={cn(
                 "px-3 py-2 rounded-lg text-sm transition-all no-underline",
                 active
-                  ? "bg-violet-500/10 text-violet-100 border border-violet-500/20"
-                  : "text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03] border border-transparent"
+                  ? "bg-gradient-to-r from-violet-500/20 to-pink-500/10 text-white border border-violet-400/30 shadow-[0_0_20px_-6px_rgba(139,124,255,0.5)]"
+                  : "text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04] border border-transparent"
               )}
             >
               {item.label}
@@ -79,7 +79,7 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-[var(--color-border)] bg-[var(--color-bg-elevated)]/95 backdrop-blur-md">
+    <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-[var(--color-border)] bg-black/40 backdrop-blur-xl">
       <div className="flex overflow-x-auto px-2 py-2 gap-1 scrollbar-none">
         {NAV_ITEMS.map((item) => {
           const active = isActive(pathname, item.href);
@@ -91,7 +91,7 @@ export function MobileNav() {
               className={cn(
                 "shrink-0 px-3 py-2 rounded-lg text-xs font-medium no-underline transition-colors",
                 active
-                  ? "bg-violet-500/12 text-violet-200 border border-violet-500/20"
+                  ? "bg-gradient-to-r from-violet-500/25 to-pink-500/15 text-white border border-violet-400/30"
                   : "text-zinc-400"
               )}
             >

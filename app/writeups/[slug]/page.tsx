@@ -62,7 +62,7 @@ export default async function WriteupPage({
             {formatDate(entry.date)}
           </span>
         </div>
-        <h1 className="text-2xl md:text-3xl font-bold text-zinc-100 tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight inline-block text-gradient pb-1">
           {entry.title}
         </h1>
         {entry.summary && (

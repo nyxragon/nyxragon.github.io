@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getAllWriteups, getSiteConfig } from "@/lib/content";
 import { Sidebar, MobileNav } from "@/components/shell/Sidebar";
 import { CommandPalette } from "@/components/shell/CommandPalette";
+import { AuroraBackground } from "@/components/shell/AuroraBackground";
 import "./globals.css";
 
 const site = getSiteConfig();
@@ -29,9 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased relative">
-        <div className="workspace-bg" aria-hidden>
-          <div className="grid-overlay" />
-        </div>
+        <AuroraBackground />
 
         <div className="relative z-10 flex min-h-dvh">
           <Sidebar
