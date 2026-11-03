@@ -104,17 +104,23 @@ body::after {
    pull them further into the viewport so the glow actually reads on a narrow
    screen. Still soft and ambient, not a light show. */
 @media (max-width: 640px) {
+  /* Present but soft: dim the glow and nudge the cores toward the corners so it
+     reads as ambient without sitting behind the text column (small screen). */
+  .workspace-bg::before,
+  .workspace-bg::after {
+    opacity: 0.5;
+  }
   .workspace-bg::before {
-    top: -8%;
-    right: -22%;
-    width: 92vw;
-    height: 92vw;
+    top: -14%;
+    right: -26%;
+    width: 84vw;
+    height: 84vw;
   }
   .workspace-bg::after {
-    bottom: -10%;
-    left: -22%;
-    width: 92vw;
-    height: 92vw;
+    bottom: -16%;
+    left: -26%;
+    width: 84vw;
+    height: 84vw;
   }
 }
 
