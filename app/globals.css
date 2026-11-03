@@ -99,6 +99,25 @@ body::after {
   100% { transform: translate3d(-6vw, 6vh, 0) scale(1.2); }
 }
 
+/* Phones: at ~55vw the blobs are small (~210px) and sit mostly past the edges,
+   so the aurora barely shows — just slivers at the borders. Enlarge them and
+   pull them further into the viewport so the glow actually reads on a narrow
+   screen. Still soft and ambient, not a light show. */
+@media (max-width: 640px) {
+  .workspace-bg::before {
+    top: -8%;
+    right: -22%;
+    width: 92vw;
+    height: 92vw;
+  }
+  .workspace-bg::after {
+    bottom: -10%;
+    left: -22%;
+    width: 92vw;
+    height: 92vw;
+  }
+}
+
 .grid-overlay {
   position: absolute;
   inset: 0;
