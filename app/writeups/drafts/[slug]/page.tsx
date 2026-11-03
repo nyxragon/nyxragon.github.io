@@ -4,7 +4,7 @@ import { getShareSlugs, getWriteupEntryByShare } from "@/lib/content";
 import { Badge } from "@/components/ui/Panel";
 import { MarkdownRenderer } from "@/components/lab/MarkdownRenderer";
 import { TocRail, type TocRailItem } from "@/components/writeups/TocRail";
-import { formatDate, typeColor, typeLabel } from "@/lib/utils";
+import { typeColor, typeLabel } from "@/lib/utils";
 
 // ── Unlisted share-preview route ───────────────────────────────────
 // A draft carrying a `share:` token in its front-matter is served live here at
@@ -120,9 +120,7 @@ export default async function DraftPreviewPage({
         <header id="intro" className="animate-in scroll-mt-20">
           <div className="flex flex-wrap items-center gap-2 mb-4">
             <Badge className={typeColor(entry.type)}>{typeLabel(entry.type)}</Badge>
-            <span className="text-xs text-[#a39c8b]">
-              {formatDate(entry.date)}
-            </span>
+            <span className="text-xs text-[#a39c8b]">Draft</span>
           </div>
           <h1 className="text-3xl md:text-[2.6rem] font-extrabold tracking-tight inline-block text-gradient leading-[1.12] pb-1">
             {entry.title}
