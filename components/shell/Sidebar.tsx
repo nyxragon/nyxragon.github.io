@@ -20,7 +20,7 @@ export function Sidebar({ avatar, name, handle }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-[var(--color-border)] bg-white/[0.02] backdrop-blur-xl min-h-dvh p-6">
+    <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-[var(--color-border)] bg-white/[0.02] backdrop-blur-xl sticky top-0 self-start h-dvh overflow-y-auto p-6">
       <Link href="/" className="mb-8 no-underline group">
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-10 rounded-lg overflow-hidden avatar-ring shrink-0">

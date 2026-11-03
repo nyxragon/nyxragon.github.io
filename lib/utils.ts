@@ -23,6 +23,7 @@ export function typeLabel(type: string): string {
     research: "Research",
     essay: "Essay",
     note: "Note",
+    article: "Article",
   };
   return labels[type] || type;
 }
@@ -32,6 +33,7 @@ export function typeColor(type: string): string {
     research: "text-violet-300 border-violet-400/25 bg-violet-400/8",
     essay: "text-slate-300 border-slate-400/25 bg-slate-400/8",
     note: "text-zinc-400 border-zinc-400/25 bg-zinc-400/8",
+    article: "text-violet-300 border-violet-400/25 bg-violet-400/8",
   };
   return colors[type] || "text-zinc-400 border-zinc-400/25 bg-zinc-400/8";
 }

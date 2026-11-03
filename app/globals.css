@@ -116,51 +116,567 @@ body::after {
   .panel-hover::after { display: none; }
 }
 
-/* ── Prose (writeups) ──────────────────────────────────────── */
+/* ── Prose (writeups) ──────────────────────────────────────────
+   Long-form reading column. Width is owned by the article wrapper
+   (.writeup — see page.tsx), so prose fills it; the measure stays
+   ~68–72ch at this width. Rhythm is driven off a single --flow gap
+   so vertical spacing stays consistent across element types.
+   ───────────────────────────────────────────────────────────── */
 .prose {
-  max-width: 65ch;
+  /* Generous paragraph gap so blocks read as distinct, airy units
+     (Medium-style) instead of a dense column. At 20px/1.65 the line box is
+     ~33px; 2.5rem is ~40px, a clear step beyond one line. */
+  --flow: 2.5rem;
+  /* Reading column — a comfortable ~64ch measure at 20px. */
+  max-width: 40rem;
+  font-size: 1.25rem; /* 20px, a comfortable long-form size (Medium runs ~21px) */
+  line-height: 1.65;
+  /* Candlelit ivory — warm, luminous, deliberately not pure white (halates on
+     near-black). This only reads as "designed" because the WHOLE neutral ramp
+     below is warm too: body, chrome, borders, table. Cool violet/aqua accents
+     are the deliberate counter-temperature. */
+  color: #e9e0cf;
+  text-wrap: pretty;
+  hanging-punctuation: first;
 }
 
+/* Warm-tinted text selection — a quiet piece of the article's character */
+.prose ::selection {
+  background: rgba(255, 95, 162, 0.3);
+  color: #fff;
+}
+
+/* Flow spacing: every direct child gets a top gap from the one before it.
+   (Do NOT add a `.prose p { margin: 0 }` rule — it outranks this selector and
+   silently kills all paragraph spacing. Tailwind preflight already zeroes the
+   default margins, so this rule fully owns the vertical rhythm.) */
+.prose > * + * {
+  margin-top: var(--flow);
+}
+
+/* Lede — the opening paragraph reads as a distinct dek: larger, a shade
+   brighter, weight 400. (No drop cap: a glowing floated letter read as a UI
+   artifact, not a glyph. Character comes from rhythm + warmth, not ornament.) */
+.prose > p:first-of-type {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #f3ede0;
+  letter-spacing: -0.005em;
+}
+
+/* Drop cap — kept by request, recolored to a soft muted cyan-blue with a
+   faint rose undertone, and FLAT (no glow: the old violet glow read as a UI
+   artifact, not a letter). Calm, editorial, unmistakably a glyph. */
+.prose > p:first-of-type::first-letter {
+  float: left;
+  margin: 0.02em 0.1em 0 0;
+  font-size: 3em;
+  line-height: 0.76;
+  font-weight: 700;
+  /* match the title's gradient (.text-gradient) */
+  background: linear-gradient(115deg, #b3a8ff 0%, #ff5fa2 48%, #34e0d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Headings ──────────────────────────────────────────────── */
 .prose h2 {
-  font-size: 1.35rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-  color: #f4f4f5;
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #4fd6ca; /* cyan heading — a cool, rhythmic section accent */
+  margin-top: 4.5rem; /* more space above than below — section starts breathe */
+  margin-bottom: 1.15rem;
+  scroll-margin-top: 5rem; /* clear the sticky top bar on anchor jumps */
 }
 
 .prose h3 {
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: #f0e9da; /* bright warm — a clear, confident subsection, not a flat bold line */
+  margin-top: 3.5rem; /* generous space above sets it apart as a new sub-part */
+  margin-bottom: 0.7rem;
+  scroll-margin-top: 5rem;
+}
+
+/* The under-18 Take It Down route, boxed as its own protective callout — a calm
+   teal tint distinct from the violet info cards, so it stands out as a safety
+   fork for the reader it applies to. (Heading stays warm-ivory inside the box.) */
+.prose blockquote.callout-minor {
+  border-left-color: var(--color-aqua);
+  /* Neutral dark panel (not a cyan tint) so the aqua heading + accent bar read
+     with contrast instead of washing into a same-hue cyan glow. */
+  background: rgba(255, 255, 255, 0.035);
+}
+.prose blockquote.callout-minor > h3:first-child {
+  margin-top: 0; /* heading sits snug at the top of the box, not pushed down */
+  color: var(--color-aqua); /* heading picks up the box accent so it reads alive, not flat */
+}
+
+/* §4 Cloudflare "curbing the shady sites" — the premium last-resort PANEL.
+   Multi-hue theme (cyan→violet→rose): a gradient left bar + gradient heading +
+   faint tri-hue wash frame a single cyan hero card carrying the Cloudflare lever,
+   so the block reads as a distinct, elevated beat without competing accents. */
+.prose .escalate {
+  position: relative;
+  margin: 1.9rem 0;
+  padding: 1.7rem 1.8rem 1.6rem;
+  border: 1px solid rgba(247, 243, 236, 0.08);
+  border-left: none;
+  border-radius: 18px;
+  background: linear-gradient(
+    160deg,
+    rgba(79, 214, 202, 0.05),
+    rgba(139, 124, 255, 0.07) 55%,
+    rgba(245, 138, 173, 0.045)
+  );
+  box-shadow: 0 10px 40px -18px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+/* the multi-hue signature: a cyan→violet→rose bar down the left edge */
+.prose .escalate::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #4fd6ca, #8b7cff 55%, #f58aad);
+}
+.prose .escalate-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9a8cff;
+}
+.prose .escalate-heading {
+  margin: 0.5rem 0 0.6rem;
+  width: fit-content;
+  font-size: 1.24rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  background: linear-gradient(100deg, #5fe0d4, #9a8cff 48%, #f79ab9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.prose .escalate-heading::before {
+  content: none;
+}
+.prose .escalate-intro {
+  margin: 0 0 0.9rem;
+  color: #f2eef7;
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+.prose .escalate-intro strong {
+  color: #ffffff;
+}
+.prose .escalate-gloss {
+  margin: 0 0 1.5rem;
+  font-size: 1.16rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: #e9e0cf;
+}
+.prose .escalate-gloss strong {
+  color: #5fe0d4;
+  font-weight: 700;
+}
+
+/* ── the rail: three uniform cards, color is the only per-card variable ── */
+.prose .escalate-rail {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.prose .escalate-node {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.95rem;
+  border: 1px solid var(--edge);
+  border-top-color: var(--edge-top);
+  border-radius: 14px;
+  background: var(--wash);
+  box-shadow: 0 4px 22px -14px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.prose .escalate-node::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 42%;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(rgba(255, 255, 255, 0.035), transparent);
+  pointer-events: none;
+}
+.prose .escalate-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.prose .escalate-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.95rem;
+  height: 1.95rem;
+  border-radius: 50%;
+  color: var(--hue);
+  background: var(--hue-chip);
+  border: 1px solid var(--hue-ring);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+.prose .escalate-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.prose .escalate-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  color: var(--hue);
+  white-space: nowrap;
+}
+.prose .escalate-node-name {
+  font-size: 1.04rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #f7f3ec;
+}
+.prose .escalate-node-sub {
+  margin: 0.25rem 0 0.9rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: rgba(247, 243, 236, 0.8);
+}
+.prose .escalate-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding: 0.4rem 0.55rem;
+  border-left: 2px solid var(--hue);
+  border-radius: 0 7px 7px 0;
+  background: var(--hue-chip);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--hue);
+}
+.prose .escalate-status-ic {
+  flex: 0 0 auto;
+  width: 0.85rem;
+  height: 0.85rem;
+}
+.prose .escalate-status-ic svg {
+  width: 100%;
+  height: 100%;
+}
+/* per-card hue tokens — the ONLY per-card difference */
+.prose .escalate-danger {
+  --hue: #ff5a5f;
+  --hue-chip: rgba(255, 90, 95, 0.12);
+  --hue-ring: rgba(255, 90, 95, 0.32);
+  --wash: rgba(255, 90, 95, 0.07);
+  --edge: rgba(255, 90, 95, 0.34);
+  --edge-top: rgba(255, 90, 95, 0.5);
+}
+.prose .escalate-hope {
+  --hue: #5be3a0;
+  --hue-chip: rgba(91, 227, 160, 0.12);
+  --hue-ring: rgba(91, 227, 160, 0.4);
+  --wash: rgba(91, 227, 160, 0.07);
+  --edge: rgba(91, 227, 160, 0.34);
+  --edge-top: rgba(91, 227, 160, 0.5);
+}
+.prose .escalate-lever {
+  --hue: #5fe0d4;
+  --hue-chip: rgba(79, 214, 202, 0.13);
+  --hue-ring: rgba(79, 214, 202, 0.45);
+  --wash: rgba(79, 214, 202, 0.08);
+  --edge: rgba(79, 214, 202, 0.42);
+  --edge-top: rgba(79, 214, 202, 0.6);
+  /* the payoff node: one notch more presence via a soft outer glow */
+  box-shadow: 0 6px 26px -14px rgba(79, 214, 202, 0.55),
+    0 0 26px -10px rgba(79, 214, 202, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+/* chevrons — tinted toward the node they point into; rotate on mobile */
+.prose .escalate-chev {
+  align-self: center;
+  flex: 0 0 auto;
+  padding: 0 0.5rem;
+  font-size: 0.95rem;
+}
+.prose .escalate-chev-hope {
+  color: rgba(91, 227, 160, 0.6);
+}
+.prose .escalate-chev-cyan {
+  color: rgba(79, 214, 202, 0.6);
+}
+
+/* ── CTA: the one focal action ── */
+.prose .escalate-cta-wrap {
   margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.prose .escalate a.escalate-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3.3rem;
+  padding: 0.95rem 2.1rem;
+  border-radius: 13px;
+  border: none;
+  background: linear-gradient(135deg, #5fe0d4, #4fd6ca 72%, #54dcc0);
+  color: #0e0b0a;
+  font-size: 1.04rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  box-shadow: 0 8px 30px -8px rgba(79, 214, 202, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+.prose .escalate a.escalate-cta:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+  box-shadow: 0 13px 42px -8px rgba(79, 214, 202, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+.prose .escalate a.escalate-cta:focus-visible {
+  outline: 2px solid rgba(94, 224, 212, 0.75);
+  outline-offset: 3px;
+}
+/* button carries its own arrow; drop the global external-link glyph here */
+.prose .escalate a.escalate-cta::after {
+  content: none;
+}
+.prose .escalate a.escalate-cta span {
+  transition: transform 0.18s ease;
+}
+.prose .escalate a.escalate-cta:hover span {
+  transform: translateX(3px);
+}
+.prose .escalate-registrar {
+  margin: 0.9rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  font-style: italic;
+  color: rgba(247, 243, 236, 0.5);
 }
 
-.prose p {
-  margin-bottom: 1rem;
-  color: #d4d4d8;
+.prose .escalate-remember {
+  margin: 1.5rem 0 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(245, 236, 220, 0.09);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #bdb7c8;
+}
+.prose .escalate-remember strong {
+  color: #f7f3ec;
+}
+.prose .escalate-footnote {
+  margin: 1rem 0 0;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  font-style: italic;
+  color: rgba(247, 243, 236, 0.42);
+}
+.prose .escalate-aster {
+  color: #5fe0d4;
+  font-style: normal;
+  font-weight: 700;
 }
 
+@media (max-width: 640px) {
+  .prose .escalate {
+    padding: 1.4rem 1.2rem 1.3rem;
+  }
+  .prose .escalate-rail {
+    flex-direction: column;
+  }
+  .prose .escalate-chev {
+    transform: rotate(90deg);
+    padding: 0.45rem 0;
+    align-self: flex-start;
+    margin-left: 1.3rem;
+  }
+  .prose .escalate-node {
+    flex: none;
+  }
+  .prose .escalate a.escalate-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prose .escalate a.escalate-cta {
+    transition: box-shadow 0.18s ease, filter 0.18s ease;
+  }
+  .prose .escalate a.escalate-cta:hover {
+    transform: none;
+  }
+  .prose .escalate a.escalate-cta:hover span {
+    transform: none;
+  }
+}
+
+/* Leading section number, split out by MarkdownRenderer into .prose-h-num.
+   Reads as a quiet accent index so the 9 numbered sections scan fast. */
+/* Section-opener eyebrow: the zero-padded number sits on its own line above
+   the heading, letter-spaced, with a short accent rule trailing off it. */
+.prose-h-num {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.prose-h-num::after {
+  content: "";
+  flex: none;
+  width: 20%;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--color-accent), transparent);
+  opacity: 0.55;
+}
+
+/* ── Lists ─────────────────────────────────────────────────── */
 .prose ul,
 .prose ol {
-  margin-bottom: 1rem;
-  padding-left: 1.25rem;
-  color: #d4d4d8;
+  padding-left: 1.3rem;
+  color: #e9e0cf;
 }
 
 .prose li {
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.6rem;
 }
 
-.prose a {
-  color: var(--color-aqua);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.prose li::marker {
+  color: var(--color-accent);
 }
 
-.prose strong {
-  color: #f4f4f5;
+/* Sparkle bullets (cyan ✦) for prose unordered lists — reuses the StopNCII
+   chip marker from §1 so every bulleted list reads with the same accent.
+   Excludes .chip-list, which draws its own ✦ via ::before. */
+.prose ul:not(.chip-list) li::marker {
+  content: "✦  ";
+  color: #4fd6ca;
+  font-size: 0.85em;
+}
+
+/* "Jump to what you need" — the first ordered list reads as a TOC.
+   Styled as a quiet index card with accent counters. */
+.prose > ol:first-of-type {
+  list-style: none;
+  counter-reset: toc;
+  padding: 1.15rem 1.35rem;
+  border: 1px solid rgba(242, 232, 216, 0.1);
+  border-radius: 14px;
+  background: rgba(245, 236, 220, 0.04);
+}
+
+.prose > ol:first-of-type > li {
+  counter-increment: toc;
+  position: relative;
+  padding-left: 1.9rem;
+  margin-bottom: 0.55rem;
+  color: #ded7c7;
+}
+
+.prose > ol:first-of-type > li:last-child {
+  margin-bottom: 0;
+}
+
+.prose > ol:first-of-type > li::before {
+  content: counter(toc, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.08em;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   font-weight: 600;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Inline ────────────────────────────────────────────────── */
+.prose a {
+  color: #f58aad; /* rose links (per request) */
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(245, 138, 173, 0.45);
+  transition: color 0.18s, text-decoration-color 0.18s;
+}
+
+.prose a:hover {
+  color: #ff9ec0;
+  text-decoration-color: currentColor;
+}
+
+/* External links get a small ↗ so they clearly read as "goes off-site".
+   In-page anchors (#…) and the table-row links don't, so they stay clean. */
+.prose a[href^="http"]::after {
+  content: "↗";
+  display: inline-block;
+  margin-left: 0.1em;
+  font-size: 0.8em;
+  font-weight: 600;
+  vertical-align: baseline;
+  text-decoration: none;
+}
+
+/* Bold reads as deliberate: warm near-white, a touch brighter than body. */
+.prose strong {
+  color: #fefcf6; /* bright near-white so bold clearly pops off the ivory body */
+  font-weight: 700;
+}
+
+/* "The honest part:" — the recurring candid-caveat label. Bold + a warm amber
+   that signals real talk and sits inside the candlelit-ivory palette, without
+   touching the reserved cyan (headings) / violet (nums) / rose (links) accents. */
+.prose strong.honest-label {
+  color: #e8a44c;
+}
+
+/* Italic carries the emotional beats of this piece (e.g. the Tele-MANAS
+   line) — a soft, dignified rose makes those phrases glow a little without
+   tipping into neon or playfulness. Derived from --color-pink, muted. */
+/* Italic = emphasis by slant, with a subtle brightness lift. No colour, so
+   rose stays reserved for links and the two don't blur together. */
+.prose em {
+  color: #f1ebdd;
+  font-style: italic;
+}
+
+.prose em strong,
+.prose strong em {
+  color: #fefcf6; /* bold-italic reads as bold */
 }
 
 .prose code {
@@ -177,13 +693,440 @@ body::after {
   border-radius: 10px;
   padding: 1rem;
   overflow-x: auto;
-  margin-bottom: 1rem;
 }
 
 .prose pre code {
   background: none;
   padding: 0;
 }
+
+/* ── Callout (blockquote) — e.g. the 2-hour-law highlight ───── */
+.prose blockquote {
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--color-accent);
+  border-radius: 4px 12px 12px 4px;
+  background: rgba(139, 124, 255, 0.09);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  color: #e9e3f2;
+}
+
+.prose blockquote > * + * {
+  margin-top: 0.6rem;
+}
+
+/* ── Section dividers ──────────────────────────────────────── */
+.prose hr {
+  border: 0;
+  height: 1px;
+  margin: 3rem 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(242, 232, 216, 0.1),
+    transparent
+  );
+}
+
+/* ── Table (the "At a glance" grid) ────────────────────────── */
+.prose-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(242, 232, 216, 0.09);
+  border-radius: 12px;
+  background: rgba(245, 236, 220, 0.025);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.prose thead th {
+  text-align: left;
+  font-weight: 600;
+  color: #f5eee0;
+  background: rgba(139, 124, 255, 0.08);
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(139, 124, 255, 0.3);
+}
+
+.prose tbody td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(242, 232, 216, 0.07);
+  color: #ded7c7;
+  vertical-align: top;
+}
+
+.prose tbody td:first-child {
+  color: #f7f3ec;
+  font-weight: 600;
+}
+
+.prose tbody tr:nth-child(even) td {
+  background: rgba(245, 236, 220, 0.032);
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.prose tbody tr:hover td {
+  background: rgba(245, 236, 220, 0.05);
+}
+
+/* "At a glance" rows link to their section via the FIRST cell, kept looking
+   like plain bold text; the whole row gets a pointer so it reads as clickable. */
+.prose td:first-child a {
+  color: inherit;
+  text-decoration: none;
+}
+.prose tbody tr:has(td:first-child a) {
+  cursor: pointer;
+}
+
+/* Links in other cells (e.g. the §4 report table) are real, coloured links. */
+.prose tbody td:not(:first-child) a {
+  font-weight: 500;
+}
+/* Alternate the link colour by row — rose, then cyan — for a two-tone rhythm. */
+.prose tbody tr:nth-child(odd) td:not(:first-child) a {
+  color: #f58aad;
+}
+.prose tbody tr:nth-child(even) td:not(:first-child) a {
+  color: #4fd6ca;
+}
+.prose tbody td:not(:first-child) a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  filter: brightness(1.12);
+}
+
+/* ── Chips (```chips block) — fancy pill list, e.g. StopNCII partners ── */
+.prose .chip-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: 0.7rem 2.75rem;
+  padding-left: 2.75rem; /* indented ~1.5 tab levels */
+}
+
+.prose .chip-list > li {
+  margin: 0;
+}
+
+.prose .chip {
+  color: #b3a8ff; /* violet platform names, paired with the cyan sparkle */
+  font-weight: 500;
+}
+
+/* fancy, visible bullet marker (cyan sparkle) */
+.prose .chip::before {
+  content: "✦";
+  margin-right: 0.65rem;
+  color: #4fd6ca;
+  font-size: 0.8em;
+}
+
+.prose .chip-more {
+  color: #a39c8b;
+  font-style: italic;
+}
+
+/* On phones the rigid 3-col grid cramps longer chips (e.g. the §4 router);
+   let them flow and wrap instead. */
+@media (max-width: 640px) {
+  .prose .chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1.4rem;
+    padding-left: 0;
+  }
+}
+
+/* ── Law stat panel (§3 "your legal right") — one hero figure + supporting
+   points, so the key number leads instead of four equal tiles ── */
+.prose .law-stat {
+  display: flex;
+  align-items: center;
+  gap: 1.9rem;
+  margin: 1.8rem 0;
+  padding: 1.6rem 1.9rem;
+  border: 1px solid rgba(79, 214, 202, 0.22);
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(79, 214, 202, 0.09),
+    rgba(139, 124, 255, 0.07)
+  );
+}
+.prose .law-stat-hero {
+  flex-shrink: 0;
+}
+.prose .law-stat-big {
+  font-size: 2.9rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #5fe0d4;
+}
+.prose .law-stat-cap {
+  margin-top: 0.45rem;
+  max-width: 15ch;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: #c4bcac;
+}
+.prose .law-stat-div {
+  align-self: stretch;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(242, 232, 216, 0.2),
+    transparent
+  );
+}
+.prose .law-stat-points {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.prose .law-stat-point {
+  display: flex;
+  gap: 0.65rem;
+  align-items: baseline;
+  line-height: 1.4;
+}
+.prose .law-stat-mk {
+  flex-shrink: 0;
+  color: #4fd6ca;
+  font-size: 0.85em;
+}
+.prose .law-stat-point b {
+  color: #f0e9da;
+  font-weight: 700;
+}
+.prose .law-stat-pc {
+  color: #9a9283;
+}
+@media (max-width: 640px) {
+  .prose .law-stat {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+    padding: 1.4rem;
+  }
+  .prose .law-stat-big {
+    font-size: 2.5rem;
+  }
+  .prose .law-stat-cap {
+    max-width: none;
+  }
+  .prose .law-stat-div {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(242, 232, 216, 0.2),
+      transparent
+    );
+  }
+}
+
+/* ── Step cards (§2 action playbook) — numbered, text always visible, with
+   a hover lift (shadow + accent brighten) and a scroll-in staggered rise ── */
+.prose .step-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 1.7rem 0;
+}
+.prose .step-card {
+  display: grid;
+  grid-template-columns: 2.9rem 1fr;
+  gap: 0.4rem;
+  padding: 1rem 1.2rem;
+  border-radius: 14px;
+  border: 1px solid rgba(242, 232, 216, 0.1);
+  border-left: 2px solid #4fd6ca;
+  background: rgba(255, 255, 255, 0.03);
+  /* Default VISIBLE — crisis guidance is never hidden behind JS. The entrance
+     animation is layered on only once JS arms it (.anim), so a no-JS / failed
+     hydration render still shows every step. */
+  transition: border-color 0.25s ease, background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.prose .step-cards.anim .step-card {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.prose .step-cards.anim.in .step-card {
+  animation: stepIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes stepIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.prose .step-card:hover {
+  border-color: rgba(79, 214, 202, 0.4);
+  border-left-color: #7defd9;
+  background: rgba(79, 214, 202, 0.06);
+  box-shadow: 0 10px 34px -14px rgba(79, 214, 202, 0.45);
+}
+.prose .step-card.urgent {
+  border-left-color: #ff8080;
+  background: rgba(255, 120, 120, 0.06);
+}
+.prose .step-card.urgent:hover {
+  border-color: rgba(255, 128, 128, 0.42);
+  border-left-color: #ffa0a0;
+  background: rgba(255, 120, 120, 0.09);
+  box-shadow: 0 10px 34px -14px rgba(255, 120, 120, 0.5);
+}
+.prose .step-num {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #8b7cff;
+  font-variant-numeric: tabular-nums;
+  padding-top: 0.12rem;
+}
+.prose .step-card.urgent .step-num {
+  color: #ff8f8f;
+}
+.prose .step-title {
+  font-weight: 700;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+.prose .step-body {
+  color: #e9e0cf;
+  line-height: 1.55;
+  font-size: 0.96rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .prose .step-card {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+@media (max-width: 640px) {
+  .prose .step-card {
+    grid-template-columns: 2.2rem 1fr;
+    padding: 0.9rem 1rem;
+  }
+}
+
+/* ── Mobile ────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .prose {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.6;
+  }
+  .prose > p:first-of-type {
+    font-size: 1.3rem;
+  }
+  .prose h2 {
+    font-size: 1.5rem;
+    margin-top: 3.25rem;
+    gap: 0.5rem;
+  }
+  .prose h3 {
+    font-size: 1.2rem;
+    margin-top: 2.75rem;
+  }
+}
+
+/* ── Wide / ultrawide (≥1440px) ─────────────────────────────────
+   The sticky side rail (see page.tsx) now carries the contents, so the
+   inline "Jump to what you need" heading + its list are redundant here —
+   hide them. The h2 is the only top-level heading directly followed by a
+   list, so :has(+ ol) targets it uniquely. Below 1440px both stay visible. */
+@media (min-width: 1280px) {
+  .prose > h2:has(+ ol) {
+    display: none;
+  }
+  .prose > ol:first-of-type {
+    display: none;
+  }
+}
+
+/* ── Writeup shell: reading column + wide-screen rail placement ───────
+   < 1280: single centered reading column.
+   1280–1535: reading column + sticky rail as a centered pair.
+   ≥ 1536: center the reading column in a wider frame and push the rail out
+   into the right margin, so the text is optically centred and the gutters
+   read as intentional margin, not a shoved-left column. */
+.writeup-shell {
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+@media (min-width: 1280px) {
+  .writeup-shell {
+    display: grid;
+    max-width: 58rem;
+    grid-template-columns: minmax(0, 40rem) 15rem;
+    gap: 3rem;
+    justify-content: center;
+    /* NOTE: do not set `align-items: start` here — it collapses the rail's
+       column to its own height, which leaves the sticky nav no room to travel
+       so it scrolls away. Default `stretch` lets the column match the article's
+       height, and the `position: sticky` rail floats the whole way down. */
+  }
+}
+
+/* Ultra-wide monitors only: stretch the BLOG wider than the site's standard
+   width. Scoped to .writeup-shell / .prose (blog-only) and breaks out of main's
+   cap via negative inline margins, so no other page is affected. */
+@media (min-width: 1920px) {
+  .writeup-shell {
+    width: 74rem;
+    max-width: calc(100vw - 4rem);
+    margin-inline: calc((100% - 74rem) / 2);
+    grid-template-columns: minmax(0, 48rem) 16rem;
+    gap: 4rem;
+  }
+  .prose {
+    max-width: 48rem;
+  }
+}
+
+/* ── Home intro ──────────────────────────────────────────────
+   The home "welcome" message uses MarkdownRenderer too, so it must NOT pick up
+   the blog's reading styles (drop cap, 20px type, etc.). This is the site's
+   original simple prose, scoped to the home card only. */
+.home-prose {
+  max-width: 65ch;
+}
+
+.home-prose p {
+  margin-bottom: 1rem;
+  color: #d4d4d8;
+}
+
+.home-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.home-prose a {
+  color: var(--color-aqua);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.home-prose strong {
+  color: #f4f4f5;
+  font-weight: 600;
+}
+
 
 /* ── Glass panels ──────────────────────────────────────────── */
 .panel {
@@ -346,4 +1289,491 @@ body::after {
   border-radius: 50%;
   background: #34e0d4;
   box-shadow: 0 0 8px rgba(52, 224, 212, 0.6);
+}
+
+/* ============================================================
+   §6 "People who can help" — HelpCards directory.
+   Warm, human counterpart to §4's cold escalation rail: monogram
+   disks, chip-badge metadata, a big pressable tap-to-call number.
+   tone (violet / aqua / emerald) sets --help-accent; three variants:
+   .help-grid (hero + 2-up cards) · .help-list (slim rows) ·
+   .help-lozenges (soft number-forward "someone to talk to").
+   ============================================================ */
+.prose .helpcards {
+  --help-accent: #8b7cff; /* takedown (default) */
+  --help-accent-rgb: 139, 124, 255;
+  margin: 1.9rem 0;
+}
+.prose .helpcards[data-tone="abroad"] {
+  --help-accent: #34e0d4;
+  --help-accent-rgb: 52, 224, 212;
+}
+.prose .helpcards[data-tone="talk"] {
+  --help-accent: #5be3a0;
+  --help-accent-rgb: 91, 227, 160;
+}
+
+/* ---- grid (cards) ---- */
+.prose .help-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+  align-items: stretch;
+}
+.prose .help-hero {
+  grid-column: 1 / -1;
+}
+
+/* ---- the card shell ---- */
+.prose .help-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.25rem 1.3rem 1.3rem 1.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: 0 8px 30px -20px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+/* accent spine down the left edge (the per-tone signature) */
+.prose .help-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--help-accent);
+  opacity: 0.85;
+}
+.prose .help-hero {
+  padding: 1.5rem 1.6rem 1.55rem 1.75rem;
+  background: linear-gradient(
+    150deg,
+    rgba(var(--help-accent-rgb), 0.08),
+    rgba(255, 255, 255, 0.04) 60%
+  );
+}
+
+/* ---- card header: monogram + name block ---- */
+.prose .help-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.prose .help-mono {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: #f7f3ec;
+  background: linear-gradient(
+    145deg,
+    rgba(var(--help-accent-rgb), 0.38),
+    rgba(var(--help-accent-rgb), 0.12)
+  );
+  border: 1px solid rgba(var(--help-accent-rgb), 0.3);
+}
+.prose .help-hero .help-mono {
+  width: 50px;
+  height: 50px;
+  font-size: 1.35rem;
+}
+.prose .help-card-id {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  min-width: 0;
+}
+.prose .help-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--help-accent);
+}
+.prose .help-name {
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #8b7cff; /* violet names, consistent with the rest of the guide */
+}
+.prose .helpcards[data-tone="talk"] .help-name,
+.prose .helpcards[data-tone="abroad"] .help-name {
+  color: #f0e9da; /* warmer sections keep names ivory, not violet */
+}
+.prose .help-hero .help-name {
+  font-size: 1.3rem;
+}
+.prose .help-org {
+  font-size: 0.86rem;
+  color: #9a93a6;
+}
+
+/* the per-card type marker — a small mono tag that tells you what each card IS,
+   so the directory needs no section headings (color carries the broad grouping). */
+.prose .help-mark {
+  flex: none;
+  margin-left: auto;
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--help-accent);
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(var(--help-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--help-accent-rgb), 0.28);
+  white-space: nowrap;
+}
+/* in the slim rows + lozenges the marker rides inline after the name */
+.prose .help-row .help-mark,
+.prose .help-loz .help-mark {
+  margin-left: 0.5rem;
+  vertical-align: 0.1em;
+}
+
+/* ---- body copy ---- */
+.prose .help-desc {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #e9e0cf;
+}
+.prose .help-hero .help-desc {
+  font-size: 1.08rem;
+}
+.prose .help-for {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: #cfc7b8;
+}
+.prose .help-for-k {
+  display: inline-block;
+  margin-right: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--help-accent);
+  vertical-align: 0.08em;
+}
+
+/* ---- the tap-to-call number ---- */
+.prose a.help-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  min-height: 44px;
+  padding: 0.3rem 0;
+  font-family: var(--font-mono);
+  text-decoration: none;
+  color: #f3ede0;
+}
+.prose a.help-num:hover {
+  color: #fff;
+}
+.prose a.help-num::after {
+  content: none; /* never the external ↗ glyph on a phone number */
+}
+.prose .help-num-ic {
+  color: var(--help-accent);
+  font-size: 1.05em;
+}
+.prose .help-num-val {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.prose a.help-num-big {
+  gap: 0.6rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid rgba(var(--help-accent-rgb), 0.5);
+  border-radius: 12px;
+  background: rgba(var(--help-accent-rgb), 0.1);
+}
+.prose a.help-num-big .help-num-val {
+  font-size: 1.3rem;
+}
+.prose .help-num-note {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: #9a93a6;
+  letter-spacing: 0;
+}
+
+/* ---- chip badges ---- */
+.prose .help-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.prose .help-tag {
+  font-size: 0.74rem;
+  font-weight: 500;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  color: #d9d1c2;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+/* ---- credibility strip (always emerald, kept thin + factual) ---- */
+.prose .help-stat {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 0.1rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  font-size: 0.86rem;
+  line-height: 1.4;
+  color: #bfe9d2;
+}
+.prose .help-stat-ic {
+  color: #5be3a0;
+  font-weight: 700;
+}
+
+/* ---- in-card web link (keeps the global ↗) ---- */
+.prose a.help-link {
+  width: fit-content;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ---- caveats inside cards/rows ---- */
+.prose .help-warn {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #e8a44c; /* same warm amber as the honest-label */
+}
+.prose .help-note {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #9a93a6;
+}
+
+/* ---- list variant (the "hosted abroad" doors) ---- */
+.prose .help-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+  overflow: hidden;
+}
+.prose .help-row {
+  display: flex;
+  gap: 0.8rem;
+  padding: 1rem 1.2rem;
+}
+.prose .help-row + .help-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+.prose .help-row .help-mono {
+  width: 34px;
+  height: 34px;
+  font-size: 0.95rem;
+  border-radius: 10px;
+}
+.prose .help-row-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.prose .help-row-desc {
+  color: #cfc7b8;
+  font-size: 0.96rem;
+}
+.prose .help-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+}
+.prose .help-row-meta .help-num {
+  min-height: 0;
+}
+
+/* ---- lozenge variant ("someone to talk to") ---- */
+.prose .help-lozenges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.prose .help-loz {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.3rem;
+  border: 1px solid rgba(var(--help-accent-rgb), 0.18);
+  border-radius: 14px;
+  background: linear-gradient(
+    120deg,
+    rgba(var(--help-accent-rgb), 0.07),
+    rgba(255, 255, 255, 0.03)
+  );
+}
+.prose .help-loz .help-mono {
+  border-radius: 999px;
+}
+.prose .help-loz-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.prose .help-loz-desc {
+  margin: 0.15rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #e9e0cf;
+}
+.prose .help-loz-meta {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  color: #9a93a6;
+}
+.prose .help-loz .help-num {
+  flex: none;
+}
+
+/* ---- bullets variant: matches the guide's ✦ prose bullets + a call CTA ---- */
+.prose ul.help-bullets {
+  --help-accent: #8b7cff;
+  --help-accent-rgb: 139, 124, 255;
+  margin: 1.4rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.prose ul.help-bullets[data-tone="abroad"] {
+  --help-accent: #34e0d4;
+  --help-accent-rgb: 52, 224, 212;
+}
+.prose ul.help-bullets[data-tone="talk"] {
+  --help-accent: #5be3a0;
+  --help-accent-rgb: 91, 227, 160;
+}
+.prose ul.help-bullets > li {
+  /* inherits the guide-wide ✦ marker from `.prose ul:not(.chip-list) li` */
+  margin: 0;
+}
+.prose .help-b-featured .help-eyebrow {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.prose .help-b-text {
+  margin: 0;
+}
+.prose .help-b-name {
+  color: #fefcf6; /* near-white, exactly like the guide's other bullet headings */
+  font-weight: 700;
+}
+/* the proper call-to-action: a real button, big tap target, tone-colored */
+.prose .help-b-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin: 0.65rem 0 0;
+}
+.prose a.help-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 1.1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--help-accent-rgb), 0.5);
+  background: rgba(var(--help-accent-rgb), 0.12);
+  color: #f7f3ec;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.prose a.help-cta:hover {
+  background: rgba(var(--help-accent-rgb), 0.2);
+  border-color: rgba(var(--help-accent-rgb), 0.8);
+  color: #fff;
+}
+.prose a.help-cta::after {
+  content: none; /* no external ↗ glyph on the button */
+}
+.prose .help-cta-ic {
+  color: var(--help-accent);
+}
+.prose .help-cta-note {
+  font-size: 0.86rem;
+  color: #9a93a6;
+}
+.prose .help-bullets .help-stat {
+  margin-top: 0.6rem;
+}
+
+/* ---- phone reflow ---- */
+@media (max-width: 34rem) {
+  .prose .help-grid {
+    grid-template-columns: 1fr;
+  }
+  .prose .help-loz {
+    flex-wrap: wrap;
+  }
+  .prose .help-loz .help-num {
+    width: 100%;
+  }
+  .prose a.help-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── Guide note (legal disclaimer) — a quiet amber "fine print" card: small
+   type + a notepad icon + a soft amber tint. Deliberately understated so it
+   reads as a footer note, not a warning that dents confidence. ── */
+.prose .guide-note {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  margin: 2rem 0 0;
+  padding: 0.9rem 1.15rem;
+  border: 1px solid rgba(232, 164, 76, 0.26);
+  border-radius: 12px;
+  background: linear-gradient(
+    180deg,
+    rgba(232, 164, 76, 0.08),
+    rgba(232, 164, 76, 0.03)
+  );
+}
+.prose .guide-note-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.12rem;
+  color: #e8a44c;
+}
+.prose .guide-note p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #b8b0a0;
+}
+.prose .guide-note strong {
+  color: #e8a44c;
+  font-weight: 600;
 }

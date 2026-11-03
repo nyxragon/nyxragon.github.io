@@ -41,7 +41,7 @@ export default function HomePage() {
       <NavCards />
 
       <Panel className="animate-in" gradient>
-        <MarkdownRenderer content={about.intro} />
+        <MarkdownRenderer content={about.intro} className="home-prose" />
         <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-[var(--color-border)]">
           {site.links.filter((l) => l.label !== "Website").map((link) => (
             <a

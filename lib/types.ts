@@ -92,7 +92,7 @@ export type TalksContent = {
   talks: Talk[];
 };
 
-export type WriteupType = "research" | "essay" | "note";
+export type WriteupType = "research" | "essay" | "note" | "article";
 
 export type WriteupEntry = {
   slug: string;
@@ -103,6 +103,8 @@ export type WriteupEntry = {
   draft: boolean;
   summary: string;
   content: string;
+  /** Unlisted share token: serves this draft live at /writeups/drafts/<share>/ */
+  share?: string;
 };
 
 export type NavItem = {

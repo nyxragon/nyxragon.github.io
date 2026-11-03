@@ -93,6 +93,7 @@ function parseWriteupFile(filePath: string): WriteupEntry {
     draft: Boolean(data.draft),
     summary: (data.summary as string) || "",
     content: content.trim(),
+    share: typeof data.share === "string" ? data.share : undefined,
   };
 }
 
@@ -192,3 +193,27 @@ export function getWriteupSlugs(): string[] {
 }
 
 export const getWriteup = getWriteupEntry;
+
+/**
+ * Unlisted share previews: drafts carrying a `share:` token are served live at
+ * /writeups/drafts/<share>/ — a secret link, not listed anywhere and noindexed.
+ * Unlike the normal flow, these loaders read _drafts even in a production build
+ * (that is the whole point), so a draft can be shared before it's published.
+ */
+function getShareDraftEntries(): WriteupEntry[] {
+  return collectDraftFiles()
+    .map(parseWriteupFile)
+    .filter((entry): entry is WriteupEntry & { share: string } =>
+      Boolean(entry.share)
+    );
+}
+
+/** All share tokens, for generateStaticParams on the drafts route. */
+export function getShareSlugs(): string[] {
+  return getShareDraftEntries().map((entry) => entry.share as string);
+}
+
+/** Load a draft by its share token. Returns null if no draft carries it. */
+export function getWriteupEntryByShare(share: string): WriteupEntry | null {
+  return getShareDraftEntries().find((entry) => entry.share === share) ?? null;
+}
