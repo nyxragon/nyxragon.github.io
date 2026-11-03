@@ -20,6 +20,10 @@ hall_of_fame:
     - Touch Bistro
 
 cves:
+  - target: Keycloak
+    description: Widely used open-source identity and access management platform by Red Hat and the CNCF, securing authentication and access control for enterprise applications. Reported a privilege-escalation flaw via coordinated disclosure.
+    ids:
+      - CVE-2026-116468
   - target: yzane Markdown PDF
     description: Popular VS Code extension with over 2.2 million downloads, used for converting Markdown into PDF and other file formats.
     ids:
