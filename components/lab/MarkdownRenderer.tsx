@@ -7,6 +7,26 @@ import { FactTiles, type Fact } from "@/components/lab/FactTiles";
 import { EscalationPanel } from "@/components/lab/EscalationPanel";
 import { HelpCards } from "@/components/lab/HelpCards";
 
+// [label](url) links inside the ```note fine-print box (server-side, no client JS).
+function noteInline(text: string): ReactNode[] {
+  const out: ReactNode[] = [];
+  const re = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let last = 0;
+  let k = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    out.push(
+      <a key={k++} href={m[2]} target="_blank" rel="noopener noreferrer">
+        {m[1]}
+      </a>
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+
 // Trailing `{#custom-id}` on a heading overrides the auto-slug (e.g. `## … {#talk}`).
 const HEADING_ID = /\s*\{#([\w-]+)\}\s*$/;
 // Leading "N. " on a section heading → rendered as a quiet accent index.
@@ -239,7 +259,7 @@ const components: Components = {
           </svg>
           <p>
             {lead && <strong>{lead} </strong>}
-            {body}
+            {noteInline(body)}
           </p>
         </aside>
       );

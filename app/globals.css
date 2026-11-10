@@ -1579,6 +1579,14 @@ body::after {
   font-weight: 500;
 }
 
+/* ---- source citation (quiet, muted; inherits the global external ↗) ---- */
+.prose a.help-src {
+  font-size: 0.78rem;
+  color: #9a93a6;
+  text-decoration-color: rgba(154, 147, 166, 0.4);
+  white-space: nowrap;
+}
+
 /* ---- caveats inside cards/rows ---- */
 .prose .help-warn {
   margin: 0;

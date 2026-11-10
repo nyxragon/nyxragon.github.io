@@ -22,6 +22,7 @@
  *   link: Their latest report | https://...   ← label | url (rose, gets ↗ via global rule)
  *   warn: In the Gulf, possessing an image can itself be an offence.  ← amber caveat
  *   note: a quiet muted aside
+ *   source: https://...                     ← official page the number/hours come from (small muted link)
  *
  * tone ∈ takedown (violet) | abroad (aqua) | talk (emerald)
  * variant ∈ cards (hero + 2-up grid) | list (slim rows) | lozenge (soft talk rows)
@@ -44,6 +45,7 @@ export type HelpCard = {
   linkUrl?: string;
   warn?: string;
   note?: string;
+  sourceUrl?: string;
 };
 
 // Minimal **bold** + [label](url) inline rendering for descriptions.
@@ -131,7 +133,7 @@ function parse(raw: string): { tone: string; variant: string; cards: HelpCard[] 
     let descParts: string[] = [];
     for (let j = 1; j < nonEmpty.length; j++) {
       const line = nonEmpty[j].trim();
-      const km = line.match(/^(for|tel|hours|tags|stat|link|warn|note|mark)\s*:\s*(.*)$/i);
+      const km = line.match(/^(for|tel|hours|tags|stat|link|warn|note|mark|source)\s*:\s*(.*)$/i);
       if (!km) {
         descParts.push(line);
         continue;
@@ -145,6 +147,7 @@ function parse(raw: string): { tone: string; variant: string; cards: HelpCard[] 
       else if (key === "note") card.note = val;
       else if (key === "tags") card.tags = val.split("|").map((s) => s.trim()).filter(Boolean);
       else if (key === "stat") card.stat = val;
+      else if (key === "source") card.sourceUrl = val;
       else if (key === "tel") {
         const [n, note] = val.split("|").map((s) => s.trim());
         card.tel = n;
@@ -183,6 +186,16 @@ function Num({ tel, telNote, big }: { tel?: string; telNote?: string; big?: bool
       </span>
       <span className="help-num-val">{tel}</span>
       {telNote && <span className="help-num-note">{telNote}</span>}
+    </a>
+  );
+}
+
+// Where the number/hours come from: a quiet citation, never competing with the call button.
+function Source({ url }: { url?: string }) {
+  if (!url) return null;
+  return (
+    <a className="help-src" href={url} target="_blank" rel="noopener noreferrer">
+      source
     </a>
   );
 }
@@ -243,6 +256,7 @@ function Card({ c, tone }: { c: HelpCard; tone: string }) {
         </p>
       )}
       {c.note && <p className="help-note">{inline(c.note)}</p>}
+      <Source url={c.sourceUrl} />
     </div>
   );
 }
@@ -265,6 +279,7 @@ function Row({ c, tone }: { c: HelpCard; tone: string }) {
             </a>
           )}
           <Tags tags={c.tags} />
+          <Source url={c.sourceUrl} />
         </div>
         {c.warn && (
           <p className="help-warn">
@@ -294,6 +309,7 @@ function Lozenge({ c, tone }: { c: HelpCard; tone: string }) {
             {c.tags?.join(" · ")}
           </p>
         )}
+        <Source url={c.sourceUrl} />
       </div>
       <Num tel={c.tel} telNote={c.telNote} big />
     </div>
@@ -345,6 +361,7 @@ export function HelpCards({ content }: { content: string }) {
                   </a>
                 ) : null}
                 {meta && <span className="help-cta-note">{meta}</span>}
+                <Source url={c.sourceUrl} />
               </p>
               {c.stat && <Stat stat={c.stat} />}
             </li>
