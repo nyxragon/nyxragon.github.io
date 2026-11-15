@@ -1,11 +1,20 @@
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 import type { ReactNode } from "react";
 import { ClickableTableRow } from "@/components/writeups/ClickableTableRow";
 import { StepCards, type StepItem } from "@/components/lab/StepCards";
 import { FactTiles, type Fact } from "@/components/lab/FactTiles";
 import { EscalationPanel } from "@/components/lab/EscalationPanel";
 import { HelpCards } from "@/components/lab/HelpCards";
+import { AdvisoryCard, type AdvisoryLink } from "@/components/lab/AdvisoryCard";
+import {
+  HttpSteps,
+  parseHttpRows,
+  type HttpVariant,
+} from "@/components/lab/HttpSteps";
+import { AttackDiagram } from "@/components/lab/AttackDiagram";
+import { CodeCallout, parseCodeCallout } from "@/components/lab/CodeCallout";
 
 // [label](url) links inside the ```note fine-print box (server-side, no client JS).
 function noteInline(text: string): ReactNode[] {
@@ -92,6 +101,16 @@ const components: Components = {
     if (label === "the honest part:" || label === "the honest part") {
       return <strong className="honest-label">{children}</strong>;
     }
+    // A bold run that opens with "i reported" is the disclosure boast line in
+    // the intro; render it as an accent highlight so it stands out.
+    if (label.startsWith("i reported")) {
+      return <strong className="reported-badge">{children}</strong>;
+    }
+    // The "within 2 hours" figure in the law callout is the piece's hero fact;
+    // give it an amber marker highlight so the number jumps out of the callout.
+    if (label === "within 2 hours") {
+      return <strong className="law-time">{children}</strong>;
+    }
     return <strong>{children}</strong>;
   },
   // The under-18 Take It Down route is boxed as its own protective callout,
@@ -156,6 +175,83 @@ const components: Components = {
           ctaUrl={ctaUrl}
           registrar={registrarRaw}
           remember={rememberRaw}
+        />
+      );
+    }
+    // ```attackdiagram renders the inline-SVG group-move escalation hero.
+    if (typeof cls === "string" && cls.includes("language-attackdiagram")) {
+      return <AttackDiagram />;
+    }
+    // ```codecallout renders an annotated source snippet with a missing-guard finding.
+    if (typeof cls === "string" && cls.includes("language-codecallout")) {
+      const raw = textOf(
+        (child as { props?: { children?: ReactNode } }).props?.children
+      );
+      const { file, rows } = parseCodeCallout(raw);
+      return <CodeCallout file={file} rows={rows} />;
+    }
+    // ```httpledger / ```httptimeline / ```httpcards / ```httpburp render the
+    // HTTP request/response exploit steps in one of four visual variants (shared
+    // parser). Authoring: "FLAG STATUS METHOD PATH [JSON body] | caption" per
+    // line; FLAG * = the bug, ~ = a control; "--- label" = a segment divider.
+    {
+      const httpVariant: HttpVariant | null =
+        typeof cls === "string"
+          ? cls.includes("language-httpledger")
+            ? "ledger"
+            : cls.includes("language-httptimeline")
+              ? "timeline"
+              : cls.includes("language-httpcards")
+                ? "cards"
+                : cls.includes("language-httpburp")
+                  ? "burp"
+                  : null
+          : null;
+      if (httpVariant) {
+        const raw = textOf(
+          (child as { props?: { children?: ReactNode } }).props?.children
+        );
+        return <HttpSteps rows={parseHttpRows(raw)} variant={httpVariant} />;
+      }
+    }
+    // A ```advisory fenced block renders the disclosure/credit hero card: the
+    // Red Hat advisory as the primary CTA, with the upstream issue + fix PR as
+    // quiet secondary chips below. Parsed as "key: value" lines; issue/fix take
+    // "label | url". Static, no client JS.
+    if (typeof cls === "string" && cls.includes("language-advisory")) {
+      const raw = textOf(
+        (child as { props?: { children?: ReactNode } }).props?.children
+      );
+      const fields: Record<string, string> = {};
+      const links: AdvisoryLink[] = [];
+      raw
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean)
+        .forEach((line) => {
+          const sep = line.indexOf(":");
+          if (sep < 0) return;
+          const key = line.slice(0, sep).trim().toLowerCase();
+          const val = line.slice(sep + 1).trim();
+          if (key === "issue" || key === "fix") {
+            const bar = val.indexOf("|");
+            if (bar >= 0) {
+              links.push({
+                label: val.slice(0, bar).trim(),
+                url: val.slice(bar + 1).trim(),
+              });
+            }
+          } else {
+            fields[key] = val;
+          }
+        });
+      return (
+        <AdvisoryCard
+          cve={fields.cve ?? ""}
+          advisoryUrl={fields.advisory ?? "#"}
+          credit={fields.credit}
+          meta={fields.meta}
+          links={links}
         />
       );
     }
@@ -264,7 +360,21 @@ const components: Components = {
         </aside>
       );
     }
-    return <pre>{children}</pre>;
+    // Real code block: a light labeled panel. The language (from ```lang) shows
+    // as a quiet pill; rehype-highlight has already tokenized the code inside.
+    const langMatch =
+      typeof cls === "string" ? cls.match(/language-([\w-]+)/) : null;
+    const lang = langMatch ? langMatch[1] : null;
+    return (
+      <div className="codeblock">
+        {lang && (
+          <div className="cb-head">
+            <span className="cb-lang">{lang}</span>
+          </div>
+        )}
+        <pre>{children}</pre>
+      </div>
+    );
   },
 };
 
@@ -277,7 +387,11 @@ export function MarkdownRenderer({
 }) {
   return (
     <div className={className}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[[rehypeHighlight, { detect: false, ignoreMissing: true }]]}
+        components={components}
+      >
         {content}
       </ReactMarkdown>
     </div>

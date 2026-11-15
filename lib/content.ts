@@ -94,6 +94,8 @@ function parseWriteupFile(filePath: string): WriteupEntry {
     summary: (data.summary as string) || "",
     content: content.trim(),
     share: typeof data.share === "string" ? data.share : undefined,
+    cardEyebrow: typeof data.cardEyebrow === "string" ? data.cardEyebrow : undefined,
+    cardTitle: typeof data.cardTitle === "string" ? data.cardTitle : undefined,
   };
 }
 

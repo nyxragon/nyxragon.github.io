@@ -105,6 +105,9 @@ export type WriteupEntry = {
   content: string;
   /** Unlisted share token: serves this draft live at /writeups/drafts/<share>/ */
   share?: string;
+  /** Optional share-card (opengraph-image) copy overrides. */
+  cardEyebrow?: string;
+  cardTitle?: string;
 };
 
 export type NavItem = {
