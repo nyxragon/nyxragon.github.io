@@ -48,14 +48,9 @@ export default function WriteupsPage() {
                 <p className="text-sm text-zinc-400 mb-2">{entry.summary}</p>
               )}
               <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-xs text-zinc-500">
+                <span className="text-xs text-[#9d8fff]">
                   {formatDate(entry.date)}
                 </span>
-                {entry.topics.map((topic) => (
-                  <span key={topic} className="text-xs text-zinc-500">
-                    #{topic}
-                  </span>
-                ))}
               </div>
             </Panel>
           ))}
