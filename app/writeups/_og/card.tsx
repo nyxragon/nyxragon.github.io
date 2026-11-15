@@ -82,6 +82,28 @@ function headlineSize(headline: string): number {
   return 46;
 }
 
+// Pre-wrap the headline into explicit lines so Satori never runs its own
+// line-breaker. Satori mis-measures the space at an auto-wrap candidate and
+// renders it double-width (the "Your  Options" gap); giving it hard newlines
+// (whiteSpace: pre-wrap) removes every wrap decision, so spacing is uniform.
+// ~0.52em average advance for Outfit Heavy; keep a little margin under maxWidth.
+function wrapHeadline(headline: string, fontSize: number, maxWidth: number): string {
+  const maxChars = Math.floor(maxWidth / (fontSize * 0.52));
+  const lines: string[] = [];
+  let line = "";
+  for (const word of headline.split(" ")) {
+    const candidate = line ? `${line} ${word}` : word;
+    if (candidate.length > maxChars && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = candidate;
+    }
+  }
+  if (line) lines.push(line);
+  return lines.join("\n");
+}
+
 export function ogCard({
   eyebrow,
   headline,
@@ -132,6 +154,9 @@ export function ogCard({
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
+              // Hard-wrapped lines (whiteSpace: pre-wrap) so Satori never runs
+              // its own line-breaker — see wrapHeadline for why.
+              whiteSpace: "pre-wrap",
               fontFamily: "OutfitHeavy",
               fontSize: titleSize,
               lineHeight: 1.08,
@@ -143,7 +168,7 @@ export function ogCard({
               color: "transparent",
             }}
           >
-            {headline}
+            {wrapHeadline(headline, titleSize, 940)}
           </div>
           <div
             style={{
