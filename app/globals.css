@@ -727,6 +727,11 @@ body::after {
   color: #5ee6a8;
 }
 
+/* Red Hat "Important" severity rating — warm amber so the severity word pops. */
+.prose .severity-important {
+  color: #ffb84d;
+}
+
 /* ───── Disclosure / credit hero card (```advisory) ───── */
 .prose .advisory {
   margin: 2rem 0;
@@ -915,18 +920,47 @@ body::after {
    quiet language pill and restrained syntax highlighting (rehype-highlight). */
 .prose .codeblock {
   margin: 1.8rem 0;
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(139, 124, 255, 0.16);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.025);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  background: #100e1b;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 30px -18px rgba(0, 0, 0, 0.8);
   overflow: hidden;
 }
 .prose .cb-head {
   display: flex;
-  justify-content: flex-end;
-  padding: 0.5rem 0.9rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.95rem;
+  background: #0b0a14;
+  border-bottom: 1px solid rgba(139, 124, 255, 0.12);
+}
+.prose .cb-src {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #a79fce;
+  letter-spacing: 0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+a.cb-src {
+  border-bottom: 1px dotted rgba(167, 159, 206, 0.4);
+  padding-bottom: 1px;
+}
+a.cb-src:hover {
+  color: #d7d1ff;
+  border-bottom-color: rgba(188, 176, 255, 0.7);
+}
+a.cb-src::after {
+  content: " ↗";
+  opacity: 0.6;
+}
+.prose .cb-lang {
+  margin-left: auto;
 }
 .prose .cb-lang {
   font-family: var(--font-mono);
@@ -974,48 +1008,56 @@ body::after {
   padding: 0;
   border: 0;
   font-family: var(--font-mono);
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: #d7d1ff;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: #e4e0f7;
 }
 
-/* Syntax highlighting theme (hljs) — restrained, token-mapped, AA-contrast. */
+/* Syntax highlighting theme (hljs) — brand-native multi-color: lavender keywords,
+   mint strings, rose types, sky functions, peach numbers. Tuned for AA on #100e1b. */
 .prose pre code .hljs-comment,
 .prose pre code .hljs-quote {
-  color: #8a8a99;
+  color: #736d8c;
   font-style: italic;
 }
 .prose pre code .hljs-keyword,
 .prose pre code .hljs-built_in,
-.prose pre code .hljs-selector-tag {
-  color: #b3a8ff;
+.prose pre code .hljs-selector-tag,
+.prose pre code .hljs-literal {
+  color: #bcb0ff;
 }
 .prose pre code .hljs-string,
 .prose pre code .hljs-attr,
-.prose pre code .hljs-symbol {
-  color: #4fd6ca;
+.prose pre code .hljs-symbol,
+.prose pre code .hljs-regexp,
+.prose pre code .hljs-addition {
+  color: #5ee6a8;
 }
-.prose pre code .hljs-number,
-.prose pre code .hljs-literal,
-.prose pre code .hljs-regexp {
-  color: #ff8fbd;
+.prose pre code .hljs-number {
+  color: #ffb27d;
 }
 .prose pre code .hljs-title,
 .prose pre code .hljs-title.function_,
 .prose pre code .hljs-section {
-  color: #7eb8da;
+  color: #85c6ff;
 }
 .prose pre code .hljs-type,
 .prose pre code .hljs-class .hljs-title,
+.prose pre code .hljs-title.class_,
 .prose pre code .hljs-params {
-  color: #5fe0d4;
+  color: #ff9ec4;
 }
 .prose pre code .hljs-variable,
-.prose pre code .hljs-property {
-  color: #d7d1ff;
+.prose pre code .hljs-property,
+.prose pre code .hljs-attribute {
+  color: #e4e0f7;
 }
 .prose pre code .hljs-meta {
-  color: #8a8a99;
+  color: #736d8c;
+}
+.prose pre code .hljs-punctuation,
+.prose pre code .hljs-operator {
+  color: #b4acd6;
 }
 
 /* ═══ Attack diagram (```attackdiagram) — inline-SVG group-move hero ═══ */

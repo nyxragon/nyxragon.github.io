@@ -16,6 +16,31 @@ import {
 import { AttackDiagram } from "@/components/lab/AttackDiagram";
 import { CodeCallout, parseCodeCallout } from "@/components/lab/CodeCallout";
 
+// react-markdown drops a fence's meta (the text after ```lang) by default. This
+// tiny remark pass copies it onto the <pre> as data-src, so a code block can show
+// where the snippet lives in the real source. Write it as:  ```java GroupResource.addChild()
+interface MetaNode {
+  type?: string;
+  meta?: string | null;
+  data?: { hProperties?: Record<string, unknown> };
+  children?: MetaNode[];
+}
+function remarkCodeMeta() {
+  return (tree: MetaNode) => {
+    const walk = (node: MetaNode) => {
+      if (node.type === "code" && node.meta) {
+        node.data = node.data ?? {};
+        node.data.hProperties = {
+          ...(node.data.hProperties ?? {}),
+          "data-src": node.meta.trim(),
+        };
+      }
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
+
 // [label](url) links inside the ```note fine-print box (server-side, no client JS).
 function noteInline(text: string): ReactNode[] {
   const out: ReactNode[] = [];
@@ -49,6 +74,70 @@ function textOf(node: ReactNode): string {
     return textOf((node as { props?: { children?: ReactNode } }).props?.children);
   }
   return "";
+}
+
+// Rule-based colorizer for the plain code block — same philosophy as HttpSteps:
+// color by meaning, not by a generic highlighter's keyword grammar. It colors
+// method calls (name before "("), a small keyword set, strings, numbers, and
+// line/trailing comments, reusing the .hljs-* theme classes. Unknown tokens stay
+// plain, so it degrades gracefully for any language.
+const CODE_KEYWORDS = new Set([
+  "if", "else", "return", "for", "while", "do", "switch", "case", "break",
+  "continue", "new", "void", "public", "private", "protected", "static",
+  "final", "class", "interface", "enum", "extends", "implements", "import",
+  "package", "throw", "throws", "try", "catch", "finally", "this", "super",
+  "true", "false", "null", "const", "let", "var", "function", "type",
+  "boolean", "int", "long", "String",
+]);
+const CODE_TOKEN =
+  /(\s+)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|(\b\d[\d_.]*\b)|([A-Za-z_$][\w$]*)(?=\s*\()|([A-Za-z_$][\w$]*)|([(){}[\];,.<>+\-=&|?:*/%!]+)/g;
+
+function colorizeLine(code: string, keyBase: string): ReactNode[] {
+  const out: ReactNode[] = [];
+  let m: RegExpExecArray | null;
+  let k = 0;
+  CODE_TOKEN.lastIndex = 0;
+  while ((m = CODE_TOKEN.exec(code)) !== null) {
+    const key = `${keyBase}-${k++}`;
+    if (m[1]) out.push(m[1]);
+    else if (m[2])
+      out.push(<span key={key} className="hljs-string">{m[2]}</span>);
+    else if (m[3])
+      out.push(<span key={key} className="hljs-number">{m[3]}</span>);
+    else if (m[4])
+      out.push(
+        <span key={key} className="hljs-title function_">{m[4]}</span>
+      );
+    else if (m[5])
+      out.push(
+        CODE_KEYWORDS.has(m[5]) ? (
+          <span key={key} className="hljs-keyword">{m[5]}</span>
+        ) : (
+          m[5]
+        )
+      );
+    else if (m[6])
+      out.push(<span key={key} className="hljs-punctuation">{m[6]}</span>);
+  }
+  return out;
+}
+
+function colorizeCode(raw: string): ReactNode[] {
+  const lines = raw.replace(/\n+$/, "").split("\n");
+  const out: ReactNode[] = [];
+  lines.forEach((line, i) => {
+    // Peel a trailing // comment off the code (simple heuristic, not string-aware).
+    const ci = line.indexOf("//");
+    const codePart = ci >= 0 ? line.slice(0, ci) : line;
+    const commentPart = ci >= 0 ? line.slice(ci) : "";
+    out.push(...colorizeLine(codePart, `l${i}`));
+    if (commentPart)
+      out.push(
+        <span key={`c${i}`} className="hljs-comment">{commentPart}</span>
+      );
+    if (i < lines.length - 1) out.push("\n");
+  });
+  return out;
 }
 
 function slugify(value: string): string {
@@ -111,6 +200,10 @@ const components: Components = {
     if (label === "within 2 hours") {
       return <strong className="law-time">{children}</strong>;
     }
+    // A bold "Important" is the Red Hat severity rating; amber marker highlight.
+    if (label === "important") {
+      return <strong className="severity-important">{children}</strong>;
+    }
     return <strong>{children}</strong>;
   },
   // The under-18 Take It Down route is boxed as its own protective callout,
@@ -140,6 +233,12 @@ const components: Components = {
   // (e.g. the StopNCII partner list). Everything else stays a normal code block.
   pre({ children }) {
     const child = Array.isArray(children) ? children[0] : children;
+    const src =
+      child && typeof child === "object" && "props" in child
+        ? ((child as { props?: Record<string, unknown> }).props?.[
+            "data-src"
+          ] as string | undefined)
+        : undefined;
     const cls =
       child && typeof child === "object" && "props" in child
         ? ((child as { props?: { className?: string } }).props?.className ?? "")
@@ -365,14 +464,38 @@ const components: Components = {
     const langMatch =
       typeof cls === "string" ? cls.match(/language-([\w-]+)/) : null;
     const lang = langMatch ? langMatch[1] : null;
+    const raw = textOf(
+      (child as { props?: { children?: ReactNode } })?.props?.children
+    );
+    // A source label can carry a link:  ```java Label | https://github.com/...#L1-L2
+    const [srcLabel, srcHref] = src
+      ? src.split("|").map((s) => s.trim())
+      : [];
     return (
       <div className="codeblock">
-        {lang && (
+        {(lang || srcLabel) && (
           <div className="cb-head">
-            <span className="cb-lang">{lang}</span>
+            {srcLabel &&
+              (srcHref ? (
+                <a
+                  className="cb-src"
+                  href={srcHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {srcLabel}
+                </a>
+              ) : (
+                <span className="cb-src">{srcLabel}</span>
+              ))}
+            {lang && <span className="cb-lang">{lang}</span>}
           </div>
         )}
-        <pre>{children}</pre>
+        <pre>
+          <code className={`hljs${lang ? ` language-${lang}` : ""}`}>
+            {colorizeCode(raw)}
+          </code>
+        </pre>
       </div>
     );
   },
@@ -388,7 +511,7 @@ export function MarkdownRenderer({
   return (
     <div className={className}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkCodeMeta]}
         rehypePlugins={[[rehypeHighlight, { detect: false, ignoreMissing: true }]]}
         components={components}
       >
